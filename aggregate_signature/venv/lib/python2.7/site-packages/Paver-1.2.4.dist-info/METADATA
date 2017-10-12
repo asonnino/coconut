@@ -1,0 +1,33 @@
+Metadata-Version: 2.0
+Name: Paver
+Version: 1.2.4
+Summary: Easy build, distribution and deployment scripting
+Home-page: http://github.com/paver/paver
+Author: Lukas Linhart
+Author-email: bugs@almad.net
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.5
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.2
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Environment :: Console
+Classifier: Topic :: Documentation
+Classifier: Topic :: Utilities
+Classifier: Topic :: Software Development :: Build Tools
+
+Paver is a Python-based build/distribution/deployment scripting tool along the
+lines of Make or Rake. What makes Paver unique is its integration with 
+commonly used Python libraries. Common tasks that were easy before remain 
+easy. More importantly, dealing with *your* applications specific needs and 
+requirements is also easy.
+
