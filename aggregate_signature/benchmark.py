@@ -59,9 +59,9 @@ def main():
 	# ----------------------------------------------
 	# start standard timing benchmarking
 	# ----------------------------------------------
-	print(""); print("-" * 68)
+	print(""); print("-" * 69)
 	print("operations\t\tmean [ms]\t\tsd [ms]\t\truns")
-	print("-" * 68)
+	print("-" * 69)
 
 	# [keygen]
 	tester(RUNS, "keygen\t\t", keygen, 
@@ -113,7 +113,7 @@ def main():
 	)
 
 
-	print("-" * 68); print("")
+	print("-" * 69); print("")
 
 
 # ==================================================

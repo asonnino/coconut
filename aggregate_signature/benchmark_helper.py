@@ -24,7 +24,7 @@ def tester(repeat, test_name, test_to_run, *args):
     sd = numpy.std(times)
 
     # print result
-    print(test_name + "\t{:.10f}\t\t{:.10f}\t{}".format(mean*1000, sd*1000, repeat))
+    print(test_name + "\t{:.10f}\t\t{:.10f}\t{:.0E}".format(mean*1000, sd*1000, repeat))
 
 
 # ==================================================
