@@ -59,7 +59,9 @@ def main():
 	# ----------------------------------------------
 	# start standard timing benchmarking
 	# ----------------------------------------------
-	print "operation\t\tmean (s)\t\tsd (s)\t\truns"
+	print(""); print("-" * 68)
+	print("operations\t\tmean [ms]\t\tsd [ms]\t\truns")
+	print("-" * 68)
 
 	# [keygen]
 	tester(RUNS, "keygen\t\t", keygen, 
@@ -109,6 +111,9 @@ def main():
 	tester(RUNS, "blind_verify\t", blind_verify, 
 	    params, vk, kappa, sig, proof_v
 	)
+
+
+	print("-" * 68); print("")
 
 
 # ==================================================
