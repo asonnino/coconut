@@ -36,9 +36,9 @@ def test_sign():
 
 
 # ==================================================
-# test -- private sign
+# test -- blind sign
 # ==================================================
-def test_private_sign():
+def test_blind_sign():
 	params = setup()
 	(G, o, g1, h1, g2, e) = params
 
