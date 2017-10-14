@@ -2,16 +2,16 @@
 from benchmark_helper import tester
 
 from lib import setup
-from lib import keygen_sign, sign, aggregate, randomize_sign, verify, private_sign
-from lib import enc_side
-from lib import prove_sign, verify_sign
+from lib import elgamal_keygen
+from lib import keygen, sign, aggregate_sign, aggregate_keys, randomize, verify
+from lib import prepare_blind_sign, blind_sign, elgamal_dec, prepare_blind_verify, blind_verify
 from binascii import hexlify, unhexlify
 
 
 # ==================================================
 # config
 # ==================================================
-RUNS = 100
+RUNS = 1
 
 
 # ==================================================
@@ -25,41 +25,35 @@ def main():
 	(G, o, g1, h1, g2, e) = params
 
 	# user parameters
-	m = 5 				# message
-	sk_enc = o.random() # user enc secret key
+	m = 5 # message
+	(priv, pub) = elgamal_keygen(params) # El Gamal keypair
 	
-	# generate commitment and encryption
-	r = o.random()
-	cm = m*g1 + r*h1  	# commitment
-	h = G.hashG1(cm.export())	# hash-to-point
-	pk_enc = sk_enc*h  			# user enc public key
-	(a, b, k) = enc_side(params, pk_enc, m, h)
-	c = (a, b)
-
-	# proof of correctness
-	proof = prove_sign(params, pk_enc, c, cm, k, r, m)
+	# generate commitment and encryption for blind signature
+	(cm, c, proof_s) = prepare_blind_sign(params, m, pub)
 
 	# signer 1
-	(sk1, pk1) = keygen_sign(params)
-	sig1 = private_sign(params, sk1, cm, c, pk_enc, proof)
-	#assert verify(params, pk1, m+sk_enc*k, sig1)
+	(sk1, vk1) = keygen(params)
+	blind_sig1 = blind_sign(params, sk1, cm, c, pub, proof_s)
+	(h, enc_sig1) = blind_sig1
+	sig1 = (h, elgamal_dec(params, priv, enc_sig1))
 
 	# signer 2
-	(sk2, pk2) = keygen_sign(params)
-	sig2 = private_sign(params, sk2, cm, c, pk_enc, proof)
-	#assert verify(params, pk2, m+sk_enc*k, sig2)
+	(sk2, vk2) = keygen(params)
+	blind_sig2 = blind_sign(params, sk2, cm, c, pub, proof_s)
+	(h, enc_sig2) = blind_sig2
+	sig2 = (h, elgamal_dec(params, priv, enc_sig2))
 
 	# aggregate signatures
-	sig = aggregate(sig1, sig2)
+	sig = aggregate_sign(sig1, sig2)
 
-	# randomize sigature
-	sig = randomize_sign(params, sig)
+	# randomize signature
+	sig = randomize(params, sig)
 
-	# verify signature
-	(g, X1, Y1) = pk1
-	(g, X2, Y2) = pk2
-	pk = (g, X1+X2, Y1+Y2)
-	#assert verify(params, pk, m+sk_enc*k, sig)
+	# aggregate keys
+	vk = aggregate_keys(vk1, vk2)
+
+	# generate kappa and proof of correctness
+	(kappa, proof_v) = prepare_blind_verify(params, vk, m)
 
 
 	# ----------------------------------------------
@@ -67,57 +61,53 @@ def main():
 	# ----------------------------------------------
 	print "operation\t\tmean (s)\t\tsd (s)\t\truns"
 
-	# [keygen_sign]
-	tester(RUNS, "keygen_sign\t", keygen_sign, 
+	# [keygen]
+	tester(RUNS, "keygen\t\t", keygen, 
 	    params 
 	)
 
+	"""
+	signature on clear message
+	"""
 	# [sign]
 	tester(RUNS, "sign\t\t", sign, 
-	    params,
-	    sk1,
-	    m 
+	    params, sk1, m 
 	)
-
-	# [aggregate]
-	tester(RUNS, "aggregate\t", aggregate, 
-	    sig1,
-	    sig2,
+	# [aggregate_sign]
+	tester(RUNS, "aggregate_sign\t", aggregate_sign, 
+	    sig1, sig2,
 	)
-
-	# [randomize_sign]
-	tester(RUNS, "randomize_sign\t", randomize_sign, 
-	    params,
-	    sig1,
+	# [aggregate_keys]
+	tester(RUNS, "aggregate_keys\t", aggregate_keys, 
+	    vk1, vk2,
 	)
-
-	# [prove_sign]
-	tester(RUNS, "prove_sign\t", prove_sign, 
-	    params, 
-	    pk_enc, 
-	    c, 
-	    cm, 
-	    k, 
-	    r, 
-	    m
+	# [randomize]
+	tester(RUNS, "randomize_sign\t", randomize, 
+	    params, sig,
 	)
-
-	# [private_sign]
-	tester(RUNS, "private_sign\t", private_sign, 
-	    params, 
-	    sk1, 
-	    cm, 
-	    c, 
-	    pk_enc, 
-	    proof
-	)
-
 	# [verify]
 	tester(RUNS, "verify\t\t", verify, 
-	    params,
-	    pk,
-	    m,
-	    sig
+	    params, vk, m, sig
+	)
+
+	"""
+	signature on hidden message
+	"""
+	# [prepare_blind_sign]
+	tester(RUNS, "prepare_blind_sign", prepare_blind_sign, 
+	    params, m, pub
+	)
+	# [blind_sign]
+	tester(RUNS, "blind_sign\t", blind_sign, 
+	    params, sk1, cm, c, pub, proof_s
+	)
+	# [prepare_blind_verify]
+	tester(RUNS, "prepare_blind_verify", prepare_blind_verify, 
+	    params, vk, m
+	)
+	# [blind_verify]
+	tester(RUNS, "blind_verify\t", blind_verify, 
+	    params, vk, kappa, sig, proof_v
 	)
 
 
