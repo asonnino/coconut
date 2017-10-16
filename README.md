@@ -1,9 +1,7 @@
 
-# petlib
-pip install petlib
+# Dependencies 
+	- petlib: pip install petlib
 
-# bplib
-python setup.py install
+ 	- bplib: python setup.py install
 
-# testbench
-pip install numpy
+ 	- numpy: pip install numpy
