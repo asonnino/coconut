@@ -1,7 +1,0 @@
-actionid: py27
-msg: envreport
-cmdargs: ['/Users/alberto/Desktop/aggregate_signature/bplib/.tox/py27/bin/pip', 'freeze']
-
-NAME==0.1.dev0
-py==1.4.34
-pytest==3.2.3
