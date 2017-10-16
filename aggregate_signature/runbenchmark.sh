@@ -1,2 +1,2 @@
 #!/bin/bash
-python benchmark.py
+python3 benchmark.py
