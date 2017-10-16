@@ -2,3 +2,6 @@
 **/__pycache__/
 **/venv/
 *.pyc
+build/
+dist/
+aggregate_signature.egg-info/

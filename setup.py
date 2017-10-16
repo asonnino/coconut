@@ -1,10 +1,11 @@
 from setuptools import setup
 
 setup(
-    name = 'aggregate_signautre',
+    name = 'aggregate_signature',
     version = '0.1',
-    packages = ['aggregate_signautre'],
+    packages = ['aggregate_signature'],
     install_requires = [
         'petlib',
+        'numpy'
     ],
 )

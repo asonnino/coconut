@@ -1,10 +1,10 @@
 """ Performance measurements. """
 from benchmark_helper import tester
 
-from lib import setup
-from lib import elgamal_keygen
-from lib import keygen, sign, aggregate_sign, aggregate_keys, randomize, verify
-from lib import prepare_blind_sign, blind_sign, elgamal_dec, prepare_blind_verify, blind_verify
+from aggregate_signature.lib import setup
+from aggregate_signature.lib import elgamal_keygen
+from aggregate_signature.lib import keygen, sign, aggregate_sign, aggregate_keys, randomize, verify
+from aggregate_signature.lib import prepare_blind_sign, blind_sign, elgamal_dec, prepare_blind_verify, blind_verify
 from binascii import hexlify, unhexlify
 
 
