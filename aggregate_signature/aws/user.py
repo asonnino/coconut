@@ -1,19 +1,21 @@
 """ """
 from aggregate_signature.lib import setup, keygen, aggregate_sign, aggregate_keys, randomize
 
+from json  import loads, dumps
+import requests
 
 
 # ==================================================
 # main -- simulate the protocol
 # ==================================================
 def main():
-	params = setup()
+	#params = setup()
 	signer_url = r'http://127.0.0.1:5001/sign'
 
 	# user parameters
 	m = 10
 
-	r = requests.post(signer_url, data = dumps(initSensor))
+	r = requests.post(signer_url, data = dumps(m))
 	print(loads(r.text))
 
 	# signer 1

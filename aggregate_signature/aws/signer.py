@@ -20,7 +20,8 @@ class Signer():
 	# ----------------------------------------------
 	# sign
 	# ----------------------------------------------
-	def sign(self, requestData):
+	def issue_signature(self, requestData):
+		print(requestData)
 		m = loads(requestData)
 		return sign(self.params, self.sk, m)
 
@@ -36,16 +37,16 @@ app.signer = Signer()
 
 # index
 @app.route("/", methods=['GET', 'POST'])
-def index():
+def app_index():
     return dumps({"status": "OK", "message": "Hello, world!"})
 
 
 # issue a signature 
 @app.route("/sign", methods=["GET", "POST"])
-def sign():
+def app_sign():
     if request.method == "POST":
         try:
-        	returns = app.signer.sign(request.data)
+        	returns = app.signer.issue_signature(request.data)
         	return dumps({"status" : "OK", "returns" : returns})
         except Exception as e:
         	return dumps({"status"  : "ERROR", "message" : e.args})
