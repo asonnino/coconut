@@ -4,6 +4,8 @@
 
  	- bplib: 
 
+ 	- numpy
+
 
 
 # Install 
@@ -12,3 +14,8 @@
  	- bplib: python setup.py install
 
  	- numpy: pip install numpy
+
+
+
+# TODO 
+	- write setup.py (currently not working)
