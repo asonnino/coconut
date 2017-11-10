@@ -19,3 +19,4 @@
 
 # TODO 
 	- write setup.py (currently not working)
+	- TOX for tests
