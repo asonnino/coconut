@@ -2,6 +2,7 @@ from bplib.bp import BpGroup
 from hashlib  import sha256
 from binascii import hexlify, unhexlify
 from petlib.bn import Bn
+import numpy as np
 
 
 # ==================================================
@@ -122,7 +123,7 @@ def blind_sign(params, sk, cm, c, pub, proof):
 	enc_sig = (y*a, x*h + y*b)
 	return (h, enc_sig)
 
-def prepare_blind_verify(params, vk, m):
+def show_blind_sign(params, vk, m):
 	""" build elements for blind verify """
 	(G, o, g1, h1, g2, e) = params
 	(g2, X, Y) = vk
@@ -140,10 +141,58 @@ def blind_verify(params, vk, kappa, sig, proof):
 		and e(sig1, kappa) == e(sig2, g2)
 
 
+"""
+threshold signature
+"""
+def ttp_keygen(params, t, n):
+	""" generate keys for threshold signature """
+	(G, o, g1, h1, g2, e) = params
+	# generate polynomials
+	v = np.poly1d([o.random() for _ in range(0,t)])
+	w = np.poly1d([o.random() for _ in range(0,t)])
+	# generate shares
+	x = [v(i) % o for i in range(1,n+1)]
+	y = [w(i) % o for i in range(1,n+1)]
+	# set keys
+	sk = list(zip(x, y))
+	vk = [(g2, xi*g2, yi*g2) for (xi, yi) in zip(x, y)]
+	vvk = (g2, v(0)*g2, w(0)*g2)
+	return (sk, vk, vvk)
+
+def aggregateThresholdSign(params, sigs):
+	""" aggregate threshold signatures """
+	(G, o, g1, h1, g2, e) = params
+	t = len(sigs)
+	# evaluate all lagrange basis polynomial li(0)
+	l = []
+	for i in range(1,t+1):
+		numerator, denominator = 1, 1
+		for j in range(1,t+1):
+			if i != j:
+				numerator = (numerator * (0 - j)) % o
+				denominator = (denominator * (i - j)) % o 
+		li = (o + numerator * denominator.mod_inverse(o)) % o
+		print(li)
+		l.append(li)
+	# aggregate sigature
+	h, epsilon = zip(*sigs)
+	aggr_epsilon = ec_sum([l[i]*epsilon[i] for i in range(t)])
+	return (h[0], aggr_epsilon)
+
 
 # ==================================================
-# zero-knowledge proofs
+# utils and zero-knowledge proofs
 # ==================================================
+"""
+utilities
+"""
+def ec_sum(list):
+	""" sum EC points list """
+	ret = list[0]
+	for i in range(1,len(list)):
+		ret = ret + list[i]
+	return ret
+
 def to_challenge(elements):
     """ generates a Bn challenge by hashing a number of EC points """
     Cstring = b",".join([hexlify(x.export()) for x in elements])
@@ -158,29 +207,22 @@ def prove_sign(params, pub, ciphertext, cm, k, r, m):
 	""" prove correct encryption enc & commitment """
 	(G, o, g1, h1, g2, e) = params
 	(a, b) = ciphertext
-
 	# create the witnesses
 	wk = o.random()
 	wm = o.random()
 	wr = o.random()
-
 	# compute h
 	h = G.hashG1(cm.export())
-
 	# compute the witnesses commitments
 	Aw = wk * g1
 	Bw = wk * pub + wm * h
 	Cw = wm * g1 + wr * h1 
-
 	# create the challenge
 	c = to_challenge([g1, h1, g2, a, b, cm, h, Aw, Bw, Cw])
-
 	# create responses
 	rk = (wk - c * k) % o
 	rm = (wm - c * m) % o
 	rr = (wr - c * r) % o
-
-	# return the proof
 	return (c, rk, rm, rr)
 
 def verify_sign(params, pub, ciphertext, cm, proof):
@@ -188,15 +230,12 @@ def verify_sign(params, pub, ciphertext, cm, proof):
 	(G, o, g1, h1, g2, e) = params
 	(a, b) = ciphertext
 	(c, rk, rm, rr) = proof
-
 	# re-compute h
 	h = G.hashG1(cm.export())
-
 	# re-compute witnesses commitments
 	Aw = c * a + rk * g1
 	Bw = c * b + rk * pub + rm * h
 	Cw = c * cm + rm * g1 + rr * h1
-
 	# compute the challenge prime
 	return c == to_challenge([g1, h1, g2, a, b, cm, h, Aw, Bw, Cw])
 
@@ -208,20 +247,14 @@ def prove_show(params, vk, m):
 	""" prove correct of kappa=(X + m*Y) """
 	(G, o, g1, h1, g2, e) = params
 	(g2, X, Y) = vk
-
 	# create the witnesses
 	wm = o.random()
-
 	# compute the witnesses commitments
 	Aw = X + wm*Y
-
 	# create the challenge
 	c = to_challenge([g1, h1, g2, X, Y, Aw])
-
 	# create responses 
 	rm = (wm - c * m) % o
-
-	# return the proof
 	return (c, rm)
 
 def verify_show(params, vk, kappa, proof):
@@ -229,10 +262,8 @@ def verify_show(params, vk, kappa, proof):
 	(G, o, g1, h1, g2, e) = params
 	(g2, X, Y) = vk
 	(c, rm) = proof
-
 	# re-compute witnesses commitments
 	Aw = c*kappa + rm*Y + (1-c)*X
-
 	# compute the challenge prime
 	return c == to_challenge([g1, h1, g2, X, Y, Aw])
 
