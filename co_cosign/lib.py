@@ -172,7 +172,6 @@ def aggregateThresholdSign(params, sigs):
 				numerator = (numerator * (0 - j)) % o
 				denominator = (denominator * (i - j)) % o 
 		li = (o + numerator * denominator.mod_inverse(o)) % o
-		print(li)
 		l.append(li)
 	# aggregate sigature
 	h, epsilon = zip(*sigs)

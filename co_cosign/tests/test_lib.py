@@ -84,8 +84,8 @@ def test_threshold_sign():
 	params = setup()
 
 	# user parameters
-	m = 0
-	t, n = 3, 3
+	m = 10
+	t, n = 7, 13
 
 	# generate key
 	(sk, vk, vvk) = ttp_keygen(params, t, n)
