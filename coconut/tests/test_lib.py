@@ -1,4 +1,7 @@
 """ tests """
+import sys
+sys.path.append('../')
+
 from coconut.lib import setup
 from coconut.lib import elgamal_keygen
 from coconut.lib import keygen, sign, aggregate_sign, aggregate_keys, randomize, verify

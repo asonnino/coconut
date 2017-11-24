@@ -1,10 +1,13 @@
 """ Performance measurements. """
+import sys
+sys.path.append('../')
+
 from benchmark_helper import tester
 
 from coconut.lib import setup
 from coconut.lib import elgamal_keygen
 from coconut.lib import keygen, sign, aggregate_sign, aggregate_keys, randomize, verify
-from coconut.lib import prepare_blind_sign, blind_sign, elgamal_dec, prepare_blind_verify, blind_verify
+from coconut.lib import prepare_blind_sign, blind_sign, elgamal_dec, show_blind_sign, blind_verify
 from binascii import hexlify, unhexlify
 
 
@@ -53,7 +56,7 @@ def main():
 	vk = aggregate_keys(vk1, vk2)
 
 	# generate kappa and proof of correctness
-	(kappa, proof_v) = prepare_blind_verify(params, vk, m)
+	(kappa, proof_v) = show_blind_sign(params, vk, m)
 
 
 	# ----------------------------------------------
@@ -104,7 +107,7 @@ def main():
 	    params, sk1, cm, c, pub, proof_s
 	)
 	# [prepare_blind_verify]
-	tester(RUNS, "prepare_blind_verify", prepare_blind_verify, 
+	tester(RUNS, "show_blind_sign\t", show_blind_sign, 
 	    params, vk, m
 	)
 	# [blind_verify]
