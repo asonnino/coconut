@@ -8,6 +8,7 @@ from coconut.lib import setup
 from coconut.lib import elgamal_keygen
 from coconut.lib import keygen, sign, aggregate_sign, aggregate_keys, randomize, verify
 from coconut.lib import prepare_blind_sign, blind_sign, elgamal_dec, show_blind_sign, blind_verify
+from coconut.lib import ttp_keygen, aggregate_th_sign
 from binascii import hexlify, unhexlify
 
 
@@ -57,6 +58,12 @@ def main():
 
 	# generate kappa and proof of correctness
 	(kappa, proof_v) = show_blind_sign(params, vk, m)
+
+	# threshold aggregation
+	t, n = 2, 3
+	(th_sk, _, _) = ttp_keygen(params, t, n)
+	th_sigs = [sign(params, ski, m) for ski in th_sk]
+
 
 
 	# ----------------------------------------------
@@ -113,6 +120,15 @@ def main():
 	# [blind_verify]
 	tester(RUNS, "blind_verify\t", blind_verify, 
 	    params, vk, kappa, sig, proof_v
+	)
+
+
+	"""
+	threshold signature
+	"""
+	# [aggregate_th_sign]
+	tester(RUNS, "aggregate_th_sign", aggregate_th_sign, 
+	    params, th_sigs
 	)
 
 

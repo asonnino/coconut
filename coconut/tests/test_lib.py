@@ -6,7 +6,7 @@ from coconut.lib import setup
 from coconut.lib import elgamal_keygen
 from coconut.lib import keygen, sign, aggregate_sign, aggregate_keys, randomize, verify
 from coconut.lib import prepare_blind_sign, blind_sign, elgamal_dec, show_blind_sign, blind_verify
-from coconut.lib import ttp_keygen, aggregateThresholdSign
+from coconut.lib import ttp_keygen, aggregate_th_sign
 
 # ==================================================
 # test --  sign
@@ -97,7 +97,7 @@ def test_threshold_sign():
 	sigs = [sign(params, ski, m) for ski in sk]
 
 	# affregate signatures
-	sig = aggregateThresholdSign(params, sigs)
+	sig = aggregate_th_sign(params, sigs)
 
 	# randomize signature
 	randomize(params, sig)

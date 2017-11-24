@@ -159,20 +159,12 @@ def ttp_keygen(params, t, n):
 	vvk = (g2, v(0)*g2, w(0)*g2)
 	return (sk, vk, vvk)
 
-def aggregateThresholdSign(params, sigs):
+def aggregate_th_sign(params, sigs):
 	""" aggregate threshold signatures """
 	(G, o, g1, h1, g2, e) = params
 	t = len(sigs)
 	# evaluate all lagrange basis polynomial li(0)
-	l = []
-	for i in range(1,t+1):
-		numerator, denominator = 1, 1
-		for j in range(1,t+1):
-			if i != j:
-				numerator = (numerator * (0 - j)) % o
-				denominator = (denominator * (i - j)) % o 
-		li = (o + numerator * denominator.mod_inverse(o)) % o
-		l.append(li)
+	l = [lagrange_basis(t, o, i, 0) for i in range(1,t+1)]
 	# aggregate sigature
 	h, epsilon = zip(*sigs)
 	aggr_epsilon = ec_sum([l[i]*epsilon[i] for i in range(t)])
@@ -185,6 +177,15 @@ def aggregateThresholdSign(params, sigs):
 """
 utilities
 """
+def lagrange_basis(t, o, i, x=0):
+	""" generates the lagrange basis polynomial li(x), for a polynomial of degree t-1 """
+	numerator, denominator = 1, 1
+	for j in range(1,t+1):
+		if j != i:
+			numerator = (numerator * (x - j)) % o
+			denominator = (denominator * (i - j)) % o 
+	return (numerator * denominator.mod_inverse(o)) % o
+
 def ec_sum(list):
 	""" sum EC points list """
 	ret = list[0]
@@ -198,7 +199,6 @@ def to_challenge(elements):
     Chash =  sha256(Cstring).digest()
     return Bn.from_binary(Chash)
 
-
 """
 proofs on correctness of the commitment & cipher to the message
 """
@@ -207,9 +207,7 @@ def prove_sign(params, pub, ciphertext, cm, k, r, m):
 	(G, o, g1, h1, g2, e) = params
 	(a, b) = ciphertext
 	# create the witnesses
-	wk = o.random()
-	wm = o.random()
-	wr = o.random()
+	wk, wm, wr = o.random(), o.random(), o.random()
 	# compute h
 	h = G.hashG1(cm.export())
 	# compute the witnesses commitments
