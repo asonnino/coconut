@@ -1,9 +1,9 @@
 """ tests """
-from co_cosign.lib import setup
-from co_cosign.lib import elgamal_keygen
-from co_cosign.lib import keygen, sign, aggregate_sign, aggregate_keys, randomize, verify
-from co_cosign.lib import prepare_blind_sign, blind_sign, elgamal_dec, show_blind_sign, blind_verify
-from co_cosign.lib import ttp_keygen, aggregateThresholdSign
+from coconut.lib import setup
+from coconut.lib import elgamal_keygen
+from coconut.lib import keygen, sign, aggregate_sign, aggregate_keys, randomize, verify
+from coconut.lib import prepare_blind_sign, blind_sign, elgamal_dec, show_blind_sign, blind_verify
+from coconut.lib import ttp_keygen, aggregateThresholdSign
 
 # ==================================================
 # test --  sign

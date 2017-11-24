@@ -1,10 +1,10 @@
 """ Performance measurements. """
 from benchmark_helper import tester
 
-from co_cosign.lib import setup
-from co_cosign.lib import elgamal_keygen
-from co_cosign.lib import keygen, sign, aggregate_sign, aggregate_keys, randomize, verify
-from co_cosign.lib import prepare_blind_sign, blind_sign, elgamal_dec, prepare_blind_verify, blind_verify
+from coconut.lib import setup
+from coconut.lib import elgamal_keygen
+from coconut.lib import keygen, sign, aggregate_sign, aggregate_keys, randomize, verify
+from coconut.lib import prepare_blind_sign, blind_sign, elgamal_dec, prepare_blind_verify, blind_verify
 from binascii import hexlify, unhexlify
 
 
