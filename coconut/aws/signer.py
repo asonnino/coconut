@@ -1,5 +1,8 @@
 """ """
-from co_cosign.lib import setup, keygen, sign
+import sys
+sys.path.append('../')
+
+from coconut.lib import setup, keygen, sign
 from bplib.bp import G2Elem, G1Elem
 
 from json  import loads, dumps
