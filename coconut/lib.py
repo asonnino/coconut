@@ -146,7 +146,7 @@ def blind_verify(params, vk, kappa, sig, proof):
 """
 threshold signature
 """
-def ttp_keygen(params, t, n):
+def ttp_th_keygen(params, t, n):
 	""" generate keys for threshold signature """
 	(G, o, g1, hs, g2, e) = params
 	# generate polynomials
@@ -173,7 +173,6 @@ def aggregate_th_sign(params, sigs):
 	return (h[0], aggr_epsilon)
 
 
-
 """
 mixed hidden and clear messages
 """
@@ -185,6 +184,21 @@ def mix_keygen(params, q):
 	sk = (x, y)
 	vk = (g2, x*g2, [yi*g2 for yi in y])
 	return (sk, vk)
+
+def mix_ttp_th_keygen(params, t, n, q):
+	""" generate keys for threshold signature """
+	(G, o, g1, hs, g2, e) = params
+	# generate polynomials
+	v = np.poly1d([o.random() for _ in range(0,t)])
+	w = [np.poly1d([o.random() for _ in range(0,t)]) for __ in range(q)]
+	# generate shares
+	x = [v(i) % o for i in range(1,n+1)]
+	y = [[w[j](i) % o for j in range(len(w))] for i in range(1,n+1)]
+	# set keys
+	sk = list(zip(x, y))
+	vk = [(g2, x[i]*g2, [y[i][j]*g2 for j in range(len(y[i]))]) for i in range(len(sk))]
+	vvk = (g2, v(0)*g2, [wi(0)*g2 for wi in w])
+	return (sk, vk, vvk)
 
 def mix_aggregate_keys(keys):
 	""" aggregate signers verification keys """
@@ -249,6 +263,7 @@ def mix_verify(params, vk, kappa, sig, proof, m):
 	aggr = ec_sum([m[i]*Y[i+hidden_m_len] for i in range(len(m))])
 	# verify
 	return not h.isinf() and e(h, kappa+aggr) == e(epsilon, g2)
+
 
 
 # ==================================================
@@ -423,3 +438,5 @@ def verify_mix_show(params, vk, kappa, proof):
 	Aw = c*kappa + (1-c)*X + ec_sum([rm[i]*Y[i] for i in range(len(rm))])
 	# compute the challenge prime
 	return c == to_challenge([g1, g2, X, Aw]+hs+Y)
+
+

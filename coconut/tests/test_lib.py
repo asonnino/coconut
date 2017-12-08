@@ -6,8 +6,9 @@ from coconut.lib import setup
 from coconut.lib import elgamal_keygen
 from coconut.lib import keygen, sign, aggregate_sign, aggregate_keys, randomize, verify
 from coconut.lib import prepare_blind_sign, blind_sign, elgamal_dec, show_blind_sign, blind_verify
-from coconut.lib import ttp_keygen, aggregate_th_sign
+from coconut.lib import ttp_th_keygen, aggregate_th_sign
 from coconut.lib import mix_keygen, prepare_mix_sign, mix_sign, mix_aggregate_keys, show_mix_sign, mix_verify
+from coconut.lib import mix_ttp_th_keygen
 
 # ==================================================
 # test --  sign
@@ -92,7 +93,7 @@ def test_threshold_sign():
 	t, n = 7, 13
 
 	# generate key
-	(sk, vk, vvk) = ttp_keygen(params, t, n)
+	(sk, vk, vvk) = ttp_th_keygen(params, t, n)
 
 	# sign
 	sigs = [sign(params, ski, m) for ski in sk]
@@ -148,4 +149,43 @@ def test_mix_sign():
 
 	# verify signature
 	assert mix_verify(params, vk, kappa, sig, proof_v, clear_m)
+
+
+# ==================================================
+# test --  threshold mix sign
+# ==================================================
+def test_threshold_mix_sign():
+	params = setup()
+
+	# user parameters
+	q = 7 # number of messages
+	hidden_m = [10] * 5 # hideen message
+	clear_m = [3] * 2 # clear messages
+	t, n = 2, 3
+	params = setup(q)
+	(priv, pub) = elgamal_keygen(params) # El Gamal keypair
+	
+	# generate commitment and encryption for mix signature
+	(cm, c, proof_s) = prepare_mix_sign(params, clear_m, hidden_m, pub)
+
+	# generate key
+	(sk, vk, vvk) = mix_ttp_th_keygen(params, t, n, q)
+
+	# sign
+	enc_sigs = [mix_sign(params, ski, cm, c, pub, proof_s, clear_m) for ski in sk]
+	(h, enc_epsilon) = zip(*enc_sigs)
+	sigs = [(h[0], elgamal_dec(params, priv, enc)) for enc in enc_epsilon]
+
+	# aggregate signatures
+	sig = aggregate_th_sign(params, sigs)
+
+	# randomize signature
+	randomize(params, sig)
+
+	# generate kappa and proof of correctness
+	(kappa, proof_v) = show_mix_sign(params, vvk, hidden_m)
+
+	# verify signature
+	assert mix_verify(params, vvk, kappa, sig, proof_v, clear_m)
+
 
