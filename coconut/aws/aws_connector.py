@@ -111,7 +111,7 @@ class Network():
 		# update and downalod software
 		command = 'sudo apt update; sudo apt upgrade;'
 		command += 'sudo apt -y install git;'
-		command += 'git clone https://github.com/asonnino/aggregate_signature.git;'
+		command += 'git clone https://github.com/asonnino/coconut.git;'
 
 		# install petlib
 		command += 'sudo apt -y install python-dev libssl-dev libffi-dev;'
@@ -148,7 +148,20 @@ class Network():
 		self.cleanup(instance_id)
 		self.install(instance_id)
 		self._log_info(instance_id, 'Update compleated.')
-		
+
+
+	# ==================================================
+	# execute arbitrary command 
+	# ==================================================
+	def exec(self, instance_id, command):
+		self._log_info(instance_id, 'Executing: '+command)
+
+		# execute 
+		stdin, stdout, stderr = self.ssh.exec_command(command)
+		stdin.flush(); 
+		self._log_ssh(instance_id, stdout, stderr)
+		self._log_info(instance_id, 'Installation compleated')
+
 
 
 # ======================================================
@@ -158,7 +171,7 @@ if __name__ == '__main__':
 
 	# param
 	instance_id = 'i-0cdc943c545a4cfae'
-	address = 'ec2-18-216-35-63.us-east-2.compute.amazonaws.com'
+	address = 'ec2-18-217-87-226.us-east-2.compute.amazonaws.com'
 	username = 'ubuntu'
 	keyfile = '/Users/alberto/.ssh/alberto-aws.pem'
 
@@ -168,8 +181,12 @@ if __name__ == '__main__':
 	network.start(instance_id)
 	network.connect(instance_id, address, username, keyfile)
 	network.install(instance_id)
-	#network.cleanup(instance_id)
+
+
+	network.exec(instance_id, 'ls')
+
+	network.cleanup(instance_id)
 	network.disconnect()
-	#network.stop(instance_id)
+	network.stop(instance_id)
 
 

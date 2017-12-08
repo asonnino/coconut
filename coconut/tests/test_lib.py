@@ -7,6 +7,7 @@ from coconut.lib import elgamal_keygen
 from coconut.lib import keygen, sign, aggregate_sign, aggregate_keys, randomize, verify
 from coconut.lib import prepare_blind_sign, blind_sign, elgamal_dec, show_blind_sign, blind_verify
 from coconut.lib import ttp_keygen, aggregate_th_sign
+from coconut.lib import mix_keygen, prepare_mix_sign, mix_sign, mix_aggregate_keys
 
 # ==================================================
 # test --  sign
@@ -105,3 +106,46 @@ def test_threshold_sign():
 	# verify signature
 	assert verify(params, vvk, m, sig)
 
+
+
+# ==================================================
+# test -- mix sign
+# ==================================================
+def test_mix_sign():
+	# user parameters
+	q = 7 # number of messages
+	hidden_m = [10] * 5 # hideen message
+	clear_m = [3] * 2 # clear messages
+	params = setup(q)
+	(priv, pub) = elgamal_keygen(params) # El Gamal keypair
+	
+	# generate commitment and encryption for mix signature
+	(cm, c, proof_s) = prepare_mix_sign(params, clear_m, hidden_m, pub)
+
+	# signer 1
+	(sk1, vk1) = mix_keygen(params, q)
+	mix_sig1 = mix_sign(params, sk1, cm, c, pub, proof_s, clear_m)
+	(h, enc_sig1) = mix_sig1
+	sig1 = (h, elgamal_dec(params, priv, enc_sig1))
+
+	# signer 1
+	(sk2, vk2) = mix_keygen(params, q)
+	mix_sig2 = mix_sign(params, sk2, cm, c, pub, proof_s, clear_m)
+	(h, enc_sig2) = mix_sig2
+	sig2 = (h, elgamal_dec(params, priv, enc_sig2))
+	
+	# aggregate signatures
+	sig = aggregate_sign(sig1, sig2)
+
+	# randomize signature
+	sig = randomize(params, sig)
+
+	# aggregate keys
+	vk = mix_aggregate_keys([vk1, vk2])
+	"""
+	# generate kappa and proof of correctness
+	(kappa, proof_v) = show_blind_sign(params, vk, m)
+
+	# verify signature
+	assert blind_verify(params, vk, kappa, sig, proof_v)
+	"""
