@@ -7,7 +7,7 @@ from coconut.lib import elgamal_keygen
 from coconut.lib import keygen, sign, aggregate_sign, aggregate_keys, randomize, verify
 from coconut.lib import prepare_blind_sign, blind_sign, elgamal_dec, show_blind_sign, blind_verify
 from coconut.lib import ttp_keygen, aggregate_th_sign
-from coconut.lib import mix_keygen, prepare_mix_sign, mix_sign, mix_aggregate_keys
+from coconut.lib import mix_keygen, prepare_mix_sign, mix_sign, mix_aggregate_keys, show_mix_sign, mix_verify
 
 # ==================================================
 # test --  sign
@@ -142,10 +142,10 @@ def test_mix_sign():
 
 	# aggregate keys
 	vk = mix_aggregate_keys([vk1, vk2])
-	"""
+	
 	# generate kappa and proof of correctness
-	(kappa, proof_v) = show_blind_sign(params, vk, m)
+	(kappa, proof_v) = show_mix_sign(params, vk, hidden_m)
 
 	# verify signature
-	assert blind_verify(params, vk, kappa, sig, proof_v)
-	"""
+	assert mix_verify(params, vk, kappa, sig, proof_v, clear_m)
+

@@ -134,7 +134,7 @@ def show_blind_sign(params, vk, m):
 	return (kappa, proof)
 
 def blind_verify(params, vk, kappa, sig, proof):
-	""" verify a signature on a clear message """
+	""" verify a signature on a hidden message """
 	(G, o, g1, hs, g2, e) = params
 	(g2, X, Y) = vk
 	sig1 , sig2 = sig
@@ -227,28 +227,28 @@ def mix_sign(params, sk, cm, c, pub, proof, m):
 	t3 = x*h + ec_sum([yi*bi for yi,bi in zip(y,list(b)+t1)])
 	return (h, (t2, t3))
 
+def show_mix_sign(params, vk, m):
+	""" build elements for mix verify """
+	(G, o, g1, hs, g2, e) = params
+	(g2, X, Y) = vk
+	assert len(m) <= len(Y)
+	kappa = X + ec_sum([m[i]*Y[i] for i in range(len(m))])
+	proof = prove_mix_show(params, vk, m)
+	return (kappa, proof)
+
 def mix_verify(params, vk, kappa, sig, proof, m):
-	""" verify a signature on a clear message """
-	"""
+	""" verify a signature on a mixed clear and hidden message """
 	(G, o, g1, h1, g2, e) = params
 	(g2, X, Y) = vk
-	sig1 , sig2 = sig
-	# sanity checks
-	if len(kappa) != len(proof): 
-		raise Exception('Parameters format error.') 
+	(h, epsilon) = sig
+	hidden_m_len = len(proof[1])
+	assert len(m)+hidden_m_len <= len(Y)
 	# verify proof of correctness
-	for i in range(len(kappa)):
-		if not verify_show(params, vk, kappa, proof):
-			raise Exception('Parameters format error.')
-	# verify clear text messages
-
-	return not sig1.isinf() and e(sig1, X + m * Y) == e(sig2, g2)
-	# verify hidden messages
-	return not sig1.isinf() \
-		and verify_show(params, vk, kappa, proof) \
-		and e(sig1, kappa) == e(sig2, g2)
-	"""
-
+	assert verify_mix_show(params, vk, kappa, proof)
+	# add clear text messages
+	aggr = ec_sum([m[i]*Y[i+hidden_m_len] for i in range(len(m))])
+	# verify
+	return not h.isinf() and e(h, kappa+aggr) == e(epsilon, g2)
 
 
 # ==================================================
@@ -354,7 +354,7 @@ def verify_show(params, vk, kappa, proof):
 
 
 """
-proofs on correctness of the commitment & cipher many messages
+proofs on correctness of the commitment & cipher on multiple messages
 """
 def prove_mix_sign(params, pub, ciphertext, cm, k, r, clear_m, hidden_m):
 	""" prove correct encryption enc & commitment """
@@ -397,3 +397,29 @@ def verify_mix_sign(params, pub, ciphertext, cm, proof):
 
 
 
+"""
+proofs on correctness of the aggregated value (X + m*Y) on multiple messages
+"""
+def prove_mix_show(params, vk, m):
+	""" prove correct of kappa=(X + m*Y) """
+	(G, o, g1, hs, g2, e) = params
+	(g2, X, Y) = vk
+	# create the witnesses
+	wm = [o.random() for _ in m]
+	# compute the witnesses commitments
+	Aw = X + ec_sum([wm[i]*Y[i] for i in range(len(m))])
+	# create the challenge
+	c = to_challenge([g1, g2, X, Aw]+hs+Y)
+	# create responses 
+	rm = [(wm[i] - c * m[i]) % o for i in range(len(m))]
+	return (c, rm)
+
+def verify_mix_show(params, vk, kappa, proof):
+	""" verify correct of kappa=(X + m*Y) """
+	(G, o, g1, hs, g2, e) = params
+	(g2, X, Y) = vk
+	(c, rm) = proof
+	# re-compute witnesses commitments
+	Aw = c*kappa + (1-c)*X + ec_sum([rm[i]*Y[i] for i in range(len(rm))])
+	# compute the challenge prime
+	return c == to_challenge([g1, g2, X, Aw]+hs+Y)
