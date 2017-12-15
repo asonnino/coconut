@@ -1,4 +1,4 @@
-from bplib.bp import BpGroup
+from bplib.bp import BpGroup, G2Elem
 from hashlib  import sha256
 from binascii import hexlify, unhexlify
 from petlib.bn import Bn
@@ -260,7 +260,9 @@ def mix_verify(params, vk, kappa, sig, proof, m):
 	# verify proof of correctness
 	assert verify_mix_show(params, vk, kappa, proof)
 	# add clear text messages
-	aggr = ec_sum([m[i]*Y[i+hidden_m_len] for i in range(len(m))])
+	aggr = G2Elem.inf(G) 
+	if len(m) != 0:
+		aggr = ec_sum([m[i]*Y[i+hidden_m_len] for i in range(len(m))])
 	# verify
 	return not h.isinf() and e(h, kappa+aggr) == e(epsilon, g2)
 
