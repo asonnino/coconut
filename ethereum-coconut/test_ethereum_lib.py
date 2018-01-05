@@ -1,14 +1,27 @@
 """ tests """
-import sys
-sys.path.append('../')
+from ethereum_lib import setup
+from ethereum_lib import elgamal_keygen, elgamal_enc, elgamal_dec
+from ethereum_lib import keygen, sign, aggregate_sign, aggregate_keys, randomize, verify
+from ethereum_lib import prepare_blind_sign, blind_sign, elgamal_dec, show_blind_sign, blind_verify
+from ethereum_lib import ttp_th_keygen, aggregate_th_sign
+from ethereum_lib import mix_keygen, prepare_mix_sign, mix_sign, mix_aggregate_keys, show_mix_sign, mix_verify
+from ethereum_lib import mix_ttp_th_keygen
 
-from coconut.lib import setup
-from coconut.lib import elgamal_keygen
-from coconut.lib import keygen, sign, aggregate_sign, aggregate_keys, randomize, verify
-from coconut.lib import prepare_blind_sign, blind_sign, elgamal_dec, show_blind_sign, blind_verify
-from coconut.lib import ttp_th_keygen, aggregate_th_sign
-from coconut.lib import mix_keygen, prepare_mix_sign, mix_sign, mix_aggregate_keys, show_mix_sign, mix_verify
-from coconut.lib import mix_ttp_th_keygen
+from bn128 import FQ, pairing
+
+
+# ==================================================
+# test --  el gamal
+# ==================================================
+def test_elgamal():
+	params = setup()
+	(G, o, g1, hs, g2, e) = params
+	m, h = 10, hs[0]
+	(priv, pub) = elgamal_keygen(params)
+	(a, b, k) = elgamal_enc(params, pub, m, h)
+	c = (a, b)
+	assert elgamal_dec(params, priv, c) == m*h
+
 
 # ==================================================
 # test --  sign
@@ -31,7 +44,7 @@ def test_sign():
 	sig = aggregate_sign(sig1, sig2)
 
 	# randomize signature
-	randomize(params, sig)
+	sig = randomize(params, sig)
 
 	# aggregate keys
 	vk = aggregate_keys(vk1, vk2)
@@ -79,7 +92,6 @@ def test_blind_sign():
 
 	# verify signature
 	assert blind_verify(params, vk, kappa, sig, proof_v)
-
 
 
 # ==================================================
