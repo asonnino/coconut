@@ -11,7 +11,6 @@ from lib import elgamal_keygen
 from lib import keygen, sign, aggregate_sign, aggregate_keys, randomize, verify
 from lib import prepare_blind_sign, blind_sign, elgamal_dec, show_blind_sign, blind_verify
 from lib import ttp_th_keygen, aggregate_th_sign
-from lib import mix_ttp_th_keygen
 # petlib import-export
 from utils import pack, unpack
 # flask
@@ -29,7 +28,13 @@ server_id = None
 # crypto
 params = setup()
 
-
+# make packet for client
+def format(load):
+	return dumps({
+		"status": "OK",  
+		"machine_id": server_id,
+		"load": load,
+	})
 
 ##########################################
 # server functions
@@ -37,14 +42,15 @@ params = setup()
 def sign_wrapper(data):
 	m = data["message"]
 	sig = sign(params, app.sk, m)
-	return dumps({
-		"status": "OK",  
-		"machine_id": server_id,
-		"load": pack(sig),
-	})
+	return format(pack(sig))
 
 def blind_sign_wrapper(data):
-	return dumps({"status": "OK"})
+	cm = unpack(data["cm"])
+	c = unpack(data["c"])
+	proof_s = unpack(data["proof_s"])
+	pub = unpack(data["pub"])
+	blind_sig = blind_sign(params, app.sk, cm, c, pub, proof_s)
+	return format(pack(blind_sig))
 
 
 ##########################################
@@ -119,7 +125,7 @@ def sign_private():
 if __name__ == "__main__": 
 	port = int(sys.argv[1])
 	server_id = port
-	app.run(host="127.0.0.1", port=port, debug=True) 
+	app.run(host="127.0.0.1", port=port) 
 
 
 ##########################################

@@ -28,7 +28,7 @@ from tinydb import TinyDB, Query
 ##########################################
 # parameters
 ATTRIBUTE = 10
-N = 3
+N = 10
 T = 2
 
 # crypto
@@ -38,7 +38,7 @@ params = setup()
 # static fields
 PUBLIC_SIGN_DB = 'public_sign.json'
 PRIVATE_SIGN_DB = 'private_sign.json'
-SERVER_ADDR = ["127.0.0.1"] * 3
+SERVER_ADDR = ["127.0.0.1"] * N
 SERVER_PORT = [5000+i for i in range(N)]
 REPEAT = 10
 
@@ -62,6 +62,20 @@ def test_connection():
             "http://"+SERVER_ADDR[i]+":"+str(SERVER_PORT[i])+ROUTE_SERVER_INFO
         )
         assert loads(r.text)["status"] == "OK"
+
+# make aync post requests
+def async_request(route, json):
+    unsent_request = [
+        grequests.post(
+            "http://"+SERVER_ADDR[i]+":"+str(SERVER_PORT[i])+route, 
+            hooks={'response': response_handler}, 
+            data=dumps(json)
+        )
+        for i in range(N)
+    ]
+    tic = time.clock()
+    responses = grequests.map(unsent_request, size=N)
+    for r in responses: assert loads(r.text)["status"] == "OK"
 
 # response handler
 def response_handler(response, *args, **kwargs):
@@ -99,25 +113,23 @@ def set_key():
 # request signature
 ##########################################
 def request_sign():
-    unsent_request = [
-        grequests.post(
-            "http://"+SERVER_ADDR[i]+":"+str(SERVER_PORT[i])+ROUTE_SIGN_PUBLIC, 
-            hooks={'response': response_handler}, 
-            data=dumps({"message":ATTRIBUTE})
-        )
-        for i in range(N)
-    ]
-    tic = time.clock()
-    responses = grequests.map(unsent_request, size=N)
-    for r in responses: assert loads(r.text)["status"] == "OK"
+    json = {"message":ATTRIBUTE}
+    async_request(ROUTE_SIGN_PUBLIC, json)
 
 
 ##########################################
 # request blind signature
 ##########################################
 def request_blind_sign():
-    # TODO
-    assert True
+    (_, pub) = elgamal_keygen(params)
+    (cm, c, proof_s) = prepare_blind_sign(params, ATTRIBUTE, pub)
+    json = {
+        "cm": pack(cm),
+        "c": pack(c),
+        "proof_s": pack(proof_s),
+        "pub": pack(pub)
+    }
+    async_request(ROUTE_SIGN_PRIVATE, json)
 
 
 ##########################################
@@ -132,8 +144,17 @@ def main():
 
     # request signature on a public attribute
     del mem[:]
-    for _ in range(REPEAT): request_sign()
+    for _ in range(REPEAT): 
+        request_sign()
+        time.sleep(5)
     save(PUBLIC_SIGN_DB)
+
+    # request signature on a private attribute
+    del mem[:]
+    for _ in range(REPEAT): 
+        request_blind_sign()
+        time.sleep(5)
+    save(PRIVATE_SIGN_DB)
 
     
 ##########################################

@@ -110,6 +110,42 @@ def test_threshold_sign():
 
 
 # ==================================================
+# test --  threshold sign
+# ==================================================
+from random import shuffle
+def test_threshold_blind_sign():
+	params = setup()
+
+	# user parameters
+	m = 10
+	t, n = 2, 4
+
+	# generate key
+	(sk, vk, vvk) = ttp_th_keygen(params, t, n)
+	(priv, pub) = elgamal_keygen(params) 
+
+	# generate commitment and encryption for blind signature
+	(cm, c, proof_s) = prepare_blind_sign(params, m, pub)
+
+	# sign
+	blind_sigs = [blind_sign(params, ski, cm, c, pub, proof_s) for ski in sk]
+	(h, enc_sig) = zip(*blind_sigs)
+	sigs = [(h[0], elgamal_dec(params, priv, enc_sigi)) for enc_sigi in enc_sig]
+
+	# affregate signatures
+	sig = aggregate_th_sign(params, sigs)
+
+	# randomize signature
+	sig = randomize(params, sig)
+
+	# generate kappa and proof of correctness
+	(kappa, proof_v) = show_blind_sign(params, vvk, m)
+
+	# verify signature
+	assert blind_verify(params, vvk, kappa, sig, proof_v)
+
+
+# ==================================================
 # test -- mix sign
 # ==================================================
 def test_mix_sign():
