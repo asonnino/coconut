@@ -148,23 +148,46 @@ threshold signature
 """
 def ttp_th_keygen(params, t, n):
 	""" generate keys for threshold signature """
-	print(1)
 	(G, o, g1, hs, g2, e) = params
 	# generate polynomials
-	print(1)
-	v = np.poly1d([o.random() for _ in range(0,t)])
-	w = np.poly1d([o.random() for _ in range(0,t)])
-	print(1)
+	#v = np.poly1d([o.random() for _ in range(0,t)])
+	#w = np.poly1d([o.random() for _ in range(0,t)])
+	#v = np.poly1d([10 for _ in range(0,t)]) # EDIT
+	#w = np.poly1d([10 for _ in range(0,t)]) # EDIT
+	'''
+	v = [o.random() for _ in range(0,t)]
+	w = [o.random() for _ in range(0,t)]
+	v = [2 for _ in range(0,t)]
+	w = [2 for _ in range(0,t)]
 	# generate shares
+	x = []
+	for i in range(1,n+1):
+		x.append(sum([(v[j] * (i**j)) % o for j in reversed(range(len(v)))]))
+	y = []
+	for i in range(1,n+1):
+		y.append(sum([(w[j] * (i**j)) % o for j in reversed(range(len(w)))]))
+	# set keys
+	print(x)
+	print(y)
+	sk = list(zip(x, y))
+	print(sk)
+	vk = [(g2, xi*g2, yi*g2) for (xi, yi) in zip(x, y)]
+	vvk = (g2, v[-1]*g2, w[-1]*g2)
+	return (sk, vk, vvk)
+	'''
+
+	#v = np.poly1d([o.random() for _ in range(0,t)])
+	#w = np.poly1d([o.random() for _ in range(0,t)])
+	v = np.poly1d([10 for _ in range(0,t)]) # EDIT
+	w = np.poly1d([10 for _ in range(0,t)]) # EDIT
 	x = [v(i) % o for i in range(1,n+1)]
 	y = [w(i) % o for i in range(1,n+1)]
-	print(1)
 	# set keys
 	sk = list(zip(x, y))
 	vk = [(g2, xi*g2, yi*g2) for (xi, yi) in zip(x, y)]
 	vvk = (g2, v(0)*g2, w(0)*g2)
-	print(1)
 	return (sk, vk, vvk)
+
 
 def aggregate_th_sign(params, sigs):
 	""" aggregate threshold signatures """
