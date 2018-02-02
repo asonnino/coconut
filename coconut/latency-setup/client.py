@@ -51,7 +51,7 @@ SERVER_ADDR = [
 	"ec2-18-231-187-1.sa-east-1.compute.amazonaws.com"
 ]
 SERVER_PORT = [80] * N
-REPEAT = 1
+REPEAT = 10
 
 ROUTE_SERVER_INFO = "/"
 ROUTE_KEY_SET = "/key/set"
