@@ -96,7 +96,7 @@ def verify(params, vk, m, sig):
 
 
 """
-signature on hidden message
+signature on private message
 """
 def prepare_blind_sign(params, m, pub):
 	""" build elements for blind sign """
@@ -118,8 +118,7 @@ def blind_sign(params, sk, cm, c, pub, proof):
 	(x, y) = sk
 	(a, b) = c
 	# verify proof of correctness
-	if not verify_sign(params, pub, c, cm, proof):
-		raise Exception('Parameters format error.')
+	assert verify_sign(params, pub, c, cm, proof)
 	# issue signature
 	h = G.hashG1(cm.export())
 	enc_sig = (y*a, x*h + y*b)

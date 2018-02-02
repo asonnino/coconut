@@ -63,6 +63,9 @@ def test_connection():
         )
         assert loads(r.text)["status"] == "OK"
 
+def get_time():
+	return time.clock()
+
 # make aync post requests
 def async_request(route, json):
     unsent_request = [
@@ -73,14 +76,20 @@ def async_request(route, json):
         )
         for i in range(N)
     ]
-    tic = time.clock()
+    global tic
+    tic = get_time()
+    print("\nnew measure")
+    print(tic)
+    print("\n")
     responses = grequests.map(unsent_request, size=N)
     for r in responses: assert loads(r.text)["status"] == "OK"
 
 # response handler
 def response_handler(response, *args, **kwargs):
-    toc = time.clock()
-    record(toc, loads(response.text))
+    toc = get_time()
+    print("tic and toc:", tic,toc)
+    print("time:", toc-tic)
+    record(toc-tic, loads(response.text))
 
 # store data in mem
 def record(time, data):
@@ -91,7 +100,7 @@ def save(filename):
     with open(filename, 'w') as file:
         file.write('[')
         for i in range(len(mem)): 
-            mem[i]['time'] = mem[i]['time'] - tic
+            mem[i]['time'] = mem[i]['time'] * 1000 # change to ms
             file.write(dumps(mem[i]))
             if i != len(mem)-1: file.write(',')
         file.write(']')
