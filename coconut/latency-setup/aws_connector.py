@@ -192,12 +192,14 @@ def run(network):
 		network.cleanup(instance.id)
 		network.install(instance.id)
 		# run server
-		command = 'sudo python3 ~/coconut/coconut/latency-setup/server.py 80 &'
+		#command = 'sudo python3 ~/coconut/coconut/latency-setup/server.py 80;'
+		command = 'sudo ./coconut/coconut/latency-setup/start_server.sh'
 		network.exec(instance.id, command)
 		print('\n\n\n')
 
 def finish(network):
 	for instance in network.instances:
+		network.connect(instance.id, instance.public_dns_name, Network.USERNAME)
 		command = 'sudo killall python;'
 		network.exec(instance.id, command)
 		network.cleanup(instance.id)
@@ -206,20 +208,18 @@ def finish(network):
 
 
 if __name__ == '__main__':
-
 	# create connector object and print machine's info
 	network = Network()
-	print('List of EC2 instances:')
-	for instance in network.instances:
-		print(instance.id, '[' +instance.state['Name']+ ']', 
-			' - ', instance.public_dns_name)
-	print('\n')
 
 	# run
-	run(network)
+	# NOTE: needed to be run twice (the first run crashed); if instances are stopped, the
+	# field 'public_dns_name' is empty -- it will be non nul only on the second run.
+	try:
+		run(network)
+	except Exception: run(network)
 
 	# finish
-	finish(network)
+	#finish(network)
 
 
 

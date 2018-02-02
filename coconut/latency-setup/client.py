@@ -82,7 +82,7 @@ def async_request(route, json):
     global tic
     tic = get_time()
     responses = grequests.map(unsent_request, size=N)
-    for r in responses: assert loads(r.text)["status"] == "OK"
+    for r in responses: print(loads(r.text))
 
 # response handler
 def response_handler(response, *args, **kwargs):
