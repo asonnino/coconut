@@ -39,8 +39,8 @@ params = setup()
 PUBLIC_SIGN_DB = 'public_sign.json'
 PRIVATE_SIGN_DB = 'private_sign.json'
 SERVER_ADDR = [
-	"ec2-18-219-15-223.us-east-2.compute.amazonaws.com", 
-	"ec2-18-216-197-109.us-east-2.compute.amazonaws.com"
+	"ec2-18-218-132-71.us-east-2.compute.amazonaws.com", 
+	"ec2-18-219-93-168.us-east-2.compute.amazonaws.com"
 ]
 SERVER_PORT = [80] * N
 REPEAT = 1

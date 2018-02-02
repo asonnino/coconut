@@ -131,13 +131,11 @@ class Network():
 		command += 'sudo pip3 install petlib;'
 
 		# install bplib
-		command += 'cd ~/coconut/bplib-master;'
-		command += 'sudo python3 setup.py install;'
+		command += 'cd ~/coconut/bplib-master; sudo python3 setup.py install;'
 		#command += 'sudo pip3 install petlib;'
 
 		# install numpy & flask
-		command += 'sudo pip3 install numpy;'
-		command += 'sudo pip3 install flask;'
+		command += 'sudo pip3 install numpy; sudo pip3 install flask;'
 
 		# execute 
 		stdin, stdout, stderr = self.ssh.exec_command(command)
@@ -192,15 +190,15 @@ def run(network):
 		network.cleanup(instance.id)
 		network.install(instance.id)
 		# run server
-		#command = 'sudo python3 ~/coconut/coconut/latency-setup/server.py 80;'
-		command = 'sudo ./coconut/coconut/latency-setup/start_server.sh'
+		command = 'sudo python3 ~/coconut/coconut/latency-setup/server.py 80;'
+		#command = 'cd ~/coconut/coconut/latency-setup; sudo bash start_server.sh;'
 		network.exec(instance.id, command)
 		print('\n\n\n')
 
 def finish(network):
 	for instance in network.instances:
 		network.connect(instance.id, instance.public_dns_name, Network.USERNAME)
-		command = 'sudo killall python;'
+		command = 'sudo killall python3;'
 		network.exec(instance.id, command)
 		network.cleanup(instance.id)
 		network.disconnect(instance.id)
@@ -211,12 +209,15 @@ if __name__ == '__main__':
 	# create connector object and print machine's info
 	network = Network()
 
+	# get instances
+	# NOTE: run multiple time to avoid problem below
+	for instance in network.instances:
+		print(instance.id, instance.state)
+
 	# run
 	# NOTE: needed to be run twice (the first run crashed); if instances are stopped, the
 	# field 'public_dns_name' is empty -- it will be non nul only on the second run.
-	try:
-		run(network)
-	except Exception: run(network)
+	run(network)
 
 	# finish
 	#finish(network)
