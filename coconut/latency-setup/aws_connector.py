@@ -1,3 +1,4 @@
+''' '''
 import sys
 import boto3
 from botocore.exceptions import ClientError
@@ -5,9 +6,13 @@ import paramiko
 
 
 # ======================================================
-# 
+#  connectro class
 # ======================================================
 class Network():
+	# EC2 params
+	REGION = 'us-east-2'
+	USERNAME = 'ubuntu'
+
 	# colors
 	OKGREEN = '\033[92m'
 	WARNING = '\033[93m'
@@ -20,10 +25,10 @@ class Network():
 	# ==================================================
 	def __init__(self):
 		# create client
-		self.ec2 = boto3.client('ec2', region_name='us-east-2')
+		self.ec2 = boto3.client('ec2', region_name=Network.REGION)
 
 		# get instances
-		source = boto3.resource('ec2', region_name='us-east-2')
+		source = boto3.resource('ec2', region_name=Network.REGION)
 		self.instances = []
 		for instance in source.instances.all():
 			if instance.state['Name'] != 'terminated':
@@ -72,7 +77,7 @@ class Network():
 	# ==================================================
 	# ssh connect
 	# ==================================================
-	def disconnect(self):
+	def disconnect(self, instance_id):
 		self._log_info(instance_id, 'Disconnecting...')
 		self.ssh.close()
 		self._log_info(instance_id, 'Connection closed.')
@@ -126,9 +131,9 @@ class Network():
 		command += 'sudo pip3 install petlib;'
 
 		# install bplib
-		#command += 'cd aggregate_signature/aggregate_signature/bplib-master;'
-		#command += 'sudo python3 setup.py install;'
-		command += 'sudo pip3 install petlib;'
+		command += 'cd ~/coconut/bplib-master;'
+		command += 'sudo python3 setup.py install;'
+		#command += 'sudo pip3 install petlib;'
 
 		# install numpy & flask
 		command += 'sudo pip3 install numpy;'
@@ -138,7 +143,7 @@ class Network():
 		stdin, stdout, stderr = self.ssh.exec_command(command)
 		stdin.flush(); 
 		self._log_ssh(instance_id, stdout, stderr)
-		self._log_info(instance_id, 'Installation compleated')
+		self._log_info(instance_id, 'Installation completed')
 
 
 	# ==================================================
@@ -159,7 +164,7 @@ class Network():
 		self._log_info(instance_id, 'Updating...')
 		self.cleanup(instance_id)
 		self.install(instance_id)
-		self._log_info(instance_id, 'Update compleated.')
+		self._log_info(instance_id, 'Update completed.')
 
 
 	# ==================================================
@@ -172,53 +177,49 @@ class Network():
 		stdin, stdout, stderr = self.ssh.exec_command(command)
 		stdin.flush(); 
 		self._log_ssh(instance_id, stdout, stderr)
-		self._log_info(instance_id, 'Installation compleated')
+		self._log_info(instance_id, 'Installation completed')
 
 
 
 # ======================================================
 # entry point
 # ======================================================
-if __name__ == '__main__':
+def run(network):
+	for instance in network.instances:
+		# start machine
+		network.start(instance.id)
+		network.connect(instance.id, instance.public_dns_name, Network.USERNAME)
+		network.cleanup(instance.id)
+		network.install(instance.id)
+		# run server
+		command = 'sudo python3 ~/coconut/coconut/latency-setup/server.py 80 &'
+		network.exec(instance.id, command)
+		print('\n\n\n')
 
-	# param
-	username = 'ubuntu'
+def finish(network):
+	for instance in network.instances:
+		command = 'sudo killall python;'
+		network.exec(instance.id, command)
+		network.cleanup(instance.id)
+		network.disconnect(instance.id)
+		network.stop(instance.id)
+
+
+if __name__ == '__main__':
 
 	# create connector object and print machine's info
 	network = Network()
 	print('List of EC2 instances:')
 	for instance in network.instances:
-		print(instance.id, '[' +instance.state['Name']+ ']', ' - ', instance.public_dns_name)
+		print(instance.id, '[' +instance.state['Name']+ ']', 
+			' - ', instance.public_dns_name)
 	print('\n')
 
-	
-	for instance in network.instances:
-		# start machine
-		network.start(instance.id)
-		network.connect(instance.id, instance.public_dns_name, username)
-		network.cleanup(instance.id)
-		network.install(instance.id)
+	# run
+	run(network)
 
-		command += 'sudo python3 ~/coconut/coconut/latency-setup/server.py 80 &;'
-		network.exec(instance.id, command)
+	# finish
+	finish(network)
 
-
-
-	# start machines
-	#network.stop([instance.id for instance in network.instances])
-
-
-
-	'''
-	network.connect(instance_id, address, username)
-	network.install(instance_id)
-
-
-	network.exec(instance_id, 'ls')
-
-	network.cleanup(instance_id)
-	network.disconnect()
-	network.stop(instance_id)
-	'''
 
 

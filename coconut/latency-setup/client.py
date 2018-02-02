@@ -81,17 +81,12 @@ def async_request(route, json):
     ]
     global tic
     tic = get_time()
-    print("\nnew measure")
-    print(tic)
-    print("\n")
     responses = grequests.map(unsent_request, size=N)
     for r in responses: assert loads(r.text)["status"] == "OK"
 
 # response handler
 def response_handler(response, *args, **kwargs):
     toc = get_time()
-    print("tic and toc:", tic,toc)
-    print("time:", toc-tic)
     record(toc-tic, loads(response.text))
 
 # store data in mem
@@ -150,23 +145,29 @@ def request_blind_sign():
 def main():
     # test server connection
     test_connection()
+    print('[OK] Test connection.')
 
     # attribute private key to each authority
     set_key()
+    print('[OK] Key distribution.')
 
     # request signature on a public attribute
+    print('[OK] Testing public attr. signature...')
     del mem[:]
     for _ in range(REPEAT): 
         request_sign()
         time.sleep(5)
     save(PUBLIC_SIGN_DB)
+    print('[OK] Done.')
 
     # request signature on a private attribute
+    print('[OK] Testing private attr. signature...')
     del mem[:]
     for _ in range(REPEAT): 
         request_blind_sign()
         time.sleep(5)
     save(PRIVATE_SIGN_DB)
+    print('[OK] Done.')
 
     
 ##########################################
