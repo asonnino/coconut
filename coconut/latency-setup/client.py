@@ -28,7 +28,7 @@ from tinydb import TinyDB, Query
 ##########################################
 # parameters
 ATTRIBUTE = 10
-N = 2
+N = 10
 T = N
 
 # crypto
@@ -40,7 +40,15 @@ PUBLIC_SIGN_DB = 'public_sign.json'
 PRIVATE_SIGN_DB = 'private_sign.json'
 SERVER_ADDR = [
 	"ec2-52-14-134-48.us-east-2.compute.amazonaws.com", 
-	"ec2-18-219-88-67.us-east-2.compute.amazonaws.com"
+	"ec2-13-56-213-134.us-west-1.compute.amazonaws.com",
+	"ec2-13-127-154-123.ap-south-1.compute.amazonaws.com",
+	"ec2-13-229-183-173.ap-southeast-1.compute.amazonaws.com",
+	"ec2-54-252-240-86.ap-southeast-2.compute.amazonaws.com",
+	"ec2-54-250-188-0.ap-northeast-1.compute.amazonaws.com",
+	"ec2-35-183-30-147.ca-central-1.compute.amazonaws.com",
+	"ec2-35-159-19-61.eu-central-1.compute.amazonaws.com",
+	"ec2-35-177-5-239.eu-west-2.compute.amazonaws.com",
+	"ec2-18-231-187-1.sa-east-1.compute.amazonaws.com"
 ]
 SERVER_PORT = [80] * N
 REPEAT = 1
