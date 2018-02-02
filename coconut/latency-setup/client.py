@@ -28,8 +28,8 @@ from tinydb import TinyDB, Query
 ##########################################
 # parameters
 ATTRIBUTE = 10
-N = 10
-T = 2
+N = 2
+T = N
 
 # crypto
 params = setup()
@@ -38,9 +38,12 @@ params = setup()
 # static fields
 PUBLIC_SIGN_DB = 'public_sign.json'
 PRIVATE_SIGN_DB = 'private_sign.json'
-SERVER_ADDR = ["127.0.0.1"] * N
-SERVER_PORT = [5000+i for i in range(N)]
-REPEAT = 10
+SERVER_ADDR = [
+	"ec2-18-219-15-223.us-east-2.compute.amazonaws.com", 
+	"ec2-18-216-197-109.us-east-2.compute.amazonaws.com"
+]
+SERVER_PORT = [80] * N
+REPEAT = 1
 
 ROUTE_SERVER_INFO = "/"
 ROUTE_KEY_SET = "/key/set"
