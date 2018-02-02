@@ -159,6 +159,15 @@ def main():
     set_key()
     print('[OK] Key distribution.')
 
+    # request signature on a private attribute
+    print('[OK] Testing private attr. signature...')
+    del mem[:]
+    for _ in range(REPEAT): 
+        request_blind_sign()
+        time.sleep(5)
+    save(PRIVATE_SIGN_DB)
+    print('[OK] Done.')
+
     # request signature on a public attribute
     print('[OK] Testing public attr. signature...')
     del mem[:]
@@ -168,14 +177,7 @@ def main():
     save(PUBLIC_SIGN_DB)
     print('[OK] Done.')
 
-    # request signature on a private attribute
-    print('[OK] Testing private attr. signature...')
-    del mem[:]
-    for _ in range(REPEAT): 
-        request_blind_sign()
-        time.sleep(5)
-    save(PRIVATE_SIGN_DB)
-    print('[OK] Done.')
+    
 
     
 ##########################################
