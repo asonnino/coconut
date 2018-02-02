@@ -29,7 +29,7 @@ from tinydb import TinyDB, Query
 # parameters
 ATTRIBUTE = 10
 N = 10
-T = N
+T = 2 # does not impact latency
 
 # crypto
 params = setup()
