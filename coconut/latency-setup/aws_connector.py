@@ -199,7 +199,7 @@ if __name__ == '__main__':
 		network.cleanup(instance.id)
 		network.install(instance.id)
 
-		command = 'cd coconut/coconut/latency-setup/;'
+		command = 'cd coconut/coconut/latency-setup;'
 		command += 'sudo python3 server.py 80 &;'
 		network.exec(instance.id, command)
 
