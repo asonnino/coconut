@@ -66,7 +66,7 @@ library Coconut {
             self.g2_y[0], self.g2_y[1], self.g2_y[2], self.g2_y[3]
         );
 
-        BN256PairingPrecompile(0x0000000000000000000000000000000000000001).BN256Pairing(
+        BN256PairingPrecompile(0x0000000000000000000000000000000000000008).BN256Pairing(
             bytes32(sig[0]), bytes32(sig[1]),
             bytes32(aggr[0]), bytes32(aggr[1]), bytes32(aggr[2]), bytes32(aggr[3]),
             bytes32(sig[2]), bytes32(sig[3]),
