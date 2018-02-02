@@ -131,8 +131,8 @@ class Network():
 		command += 'sudo pip3 install petlib;'
 
 		# install bplib
-		command += 'cd ~/coconut/bplib-master; sudo python3 setup.py install;'
-		#command += 'sudo pip3 install petlib;'
+		#command += 'cd ~/coconut/bplib-master; sudo python3 setup.py install;'
+		command += 'sudo pip3 install bplib;'
 
 		# install numpy & flask
 		command += 'sudo pip3 install numpy; sudo pip3 install flask;'
