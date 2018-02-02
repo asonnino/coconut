@@ -1,4 +1,4 @@
-from bplib.bp import BpGroup
+from bplib.bp import BpGroup, G2Elem
 from hashlib  import sha256
 from binascii import hexlify, unhexlify
 from petlib.bn import Bn
@@ -96,7 +96,7 @@ def verify(params, vk, m, sig):
 
 
 """
-signature on hidden message
+signature on private message
 """
 def prepare_blind_sign(params, m, pub):
 	""" build elements for blind sign """
@@ -118,8 +118,7 @@ def blind_sign(params, sk, cm, c, pub, proof):
 	(x, y) = sk
 	(a, b) = c
 	# verify proof of correctness
-	if not verify_sign(params, pub, c, cm, proof):
-		raise Exception('Parameters format error.')
+	assert verify_sign(params, pub, c, cm, proof)
 	# issue signature
 	h = G.hashG1(cm.export())
 	enc_sig = (y*a, x*h + y*b)
@@ -260,7 +259,9 @@ def mix_verify(params, vk, kappa, sig, proof, m):
 	# verify proof of correctness
 	assert verify_mix_show(params, vk, kappa, proof)
 	# add clear text messages
-	aggr = ec_sum([m[i]*Y[i+hidden_m_len] for i in range(len(m))])
+	aggr = G2Elem.inf(G) 
+	if len(m) != 0:
+		aggr = ec_sum([m[i]*Y[i+hidden_m_len] for i in range(len(m))])
 	# verify
 	return not h.isinf() and e(h, kappa+aggr) == e(epsilon, g2)
 

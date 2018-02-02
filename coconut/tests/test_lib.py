@@ -85,12 +85,13 @@ def test_blind_sign():
 # ==================================================
 # test --  threshold sign
 # ==================================================
+from random import shuffle
 def test_threshold_sign():
 	params = setup()
 
 	# user parameters
 	m = 10
-	t, n = 7, 13
+	t, n = 2, 4
 
 	# generate key
 	(sk, vk, vvk) = ttp_th_keygen(params, t, n)
@@ -102,11 +103,10 @@ def test_threshold_sign():
 	sig = aggregate_th_sign(params, sigs)
 
 	# randomize signature
-	randomize(params, sig)
+	sig = randomize(params, sig)
 
 	# verify signature
 	assert verify(params, vvk, m, sig)
-
 
 
 # ==================================================
@@ -155,12 +155,9 @@ def test_mix_sign():
 # test --  threshold mix sign
 # ==================================================
 def test_threshold_mix_sign():
-	params = setup()
-
-	# user parameters
 	q = 7 # number of messages
-	hidden_m = [10] * 5 # hideen message
-	clear_m = [3] * 2 # clear messages
+	hidden_m = [10] * 2 # hideen message
+	clear_m = [3] * 1 # clear messages
 	t, n = 2, 3
 	params = setup(q)
 	(priv, pub) = elgamal_keygen(params) # El Gamal keypair
@@ -180,7 +177,7 @@ def test_threshold_mix_sign():
 	sig = aggregate_th_sign(params, sigs)
 
 	# randomize signature
-	randomize(params, sig)
+	sig = randomize(params, sig)
 
 	# generate kappa and proof of correctness
 	(kappa, proof_v) = show_mix_sign(params, vvk, hidden_m)
