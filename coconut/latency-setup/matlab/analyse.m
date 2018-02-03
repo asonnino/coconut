@@ -7,7 +7,8 @@ function [ids, mu,sig] = analyse(json)
 
 % get number of machines
 requests = [json(:).request];
-ids = unique([requests(:).machine_id]);
+%ids = unique([requests(:).machine_id]);
+ids = 1:10;
 n = size(ids,2);
  
 % number of samples per machine

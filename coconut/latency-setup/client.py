@@ -26,37 +26,37 @@ from tinydb import TinyDB, Query
 
 
 ##########################################
-# parameters
-ATTRIBUTE = 10
-N = 10
-T = 2 # does not impact latency
-
-# crypto
-params = setup()
-(sk, _, vvk) = ttp_th_keygen(params, T, N)
-
 # static fields
 PUBLIC_SIGN_DB = 'public_sign.json'
 PRIVATE_SIGN_DB = 'private_sign.json'
 SERVER_ADDR = [
-	"ec2-52-14-134-48.us-east-2.compute.amazonaws.com", 
-	"ec2-13-56-213-134.us-west-1.compute.amazonaws.com",
-	"ec2-13-127-154-123.ap-south-1.compute.amazonaws.com",
-	"ec2-13-229-183-173.ap-southeast-1.compute.amazonaws.com",
-	"ec2-54-252-240-86.ap-southeast-2.compute.amazonaws.com",
-	"ec2-54-250-188-0.ap-northeast-1.compute.amazonaws.com",
-	"ec2-35-183-30-147.ca-central-1.compute.amazonaws.com",
-	"ec2-35-159-19-61.eu-central-1.compute.amazonaws.com",
-	"ec2-35-177-5-239.eu-west-2.compute.amazonaws.com",
-	"ec2-18-231-187-1.sa-east-1.compute.amazonaws.com"
+	"ec2-18-219-23-5.us-east-2.compute.amazonaws.com", 
+	"ec2-54-193-121-5.us-west-1.compute.amazonaws.com",
+	'ec2-35-154-254-195.ap-south-1.compute.amazonaws.com',
+	'ec2-54-255-241-51.ap-southeast-1.compute.amazonaws.com',
+	'ec2-54-252-204-158.ap-southeast-2.compute.amazonaws.com',
+	'ec2-13-231-5-110.ap-northeast-1.compute.amazonaws.com',
+	'ec2-35-182-143-26.ca-central-1.compute.amazonaws.com',
+	'ec2-52-59-191-2.eu-central-1.compute.amazonaws.com',
+	'ec2-35-177-222-228.eu-west-2.compute.amazonaws.com',
+	'ec2-18-231-146-219.sa-east-1.compute.amazonaws.com'
 ]
-SERVER_PORT = [80] * N
+SERVER_PORT = [80] * len(SERVER_ADDR)
 REPEAT = 10
 
 ROUTE_SERVER_INFO = "/"
 ROUTE_KEY_SET = "/key/set"
 ROUTE_SIGN_PUBLIC = "/sign/public"
 ROUTE_SIGN_PRIVATE = "/sign/private"
+
+# parameters
+ATTRIBUTE = 10
+N = len(SERVER_ADDR)
+T = 2 # does not impact latency
+
+# crypto
+params = setup()
+(sk, _, vvk) = ttp_th_keygen(params, T, N)
 
 # timings
 mem = []
@@ -90,12 +90,16 @@ def async_request(route, json):
     global tic
     tic = get_time()
     responses = grequests.map(unsent_request, size=N)
-    for r in responses: assert loads(r.text)["status"] == "OK"
+    
+    for r in responses:
+    	#print(r.elapsed and r.elapsed.total_seconds() or "failed")
+    	assert loads(r.text)["status"] == "OK"
+    	record(r.elapsed.total_seconds(), loads(r.text))
 
 # response handler
 def response_handler(response, *args, **kwargs):
     toc = get_time()
-    record(toc-tic, loads(response.text))
+    #record(toc-tic, loads(response.text))
 
 # store data in mem
 def record(time, data):
@@ -103,13 +107,13 @@ def record(time, data):
 
 # stave mem to file
 def save(filename):
-    with open(filename, 'w') as file:
-        file.write('[')
-        for i in range(len(mem)): 
-            mem[i]['time'] = mem[i]['time'] * 1000 # change to ms
-            file.write(dumps(mem[i]))
-            if i != len(mem)-1: file.write(',')
-        file.write(']')
+	with open(filename, 'w') as file:
+		file.write('[')
+		for i in range(len(mem)): 
+			mem[i]['time'] = mem[i]['time'] * 1000 # change to ms
+			file.write(dumps(mem[i]))
+			if i != len(mem)-1: file.write(',')
+		file.write(']')
 
 
 ##########################################

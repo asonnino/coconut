@@ -1,0 +1,15 @@
+PING ec2-35-177-222-228.eu-west-2.compute.amazonaws.com (172.31.6.189) 56(84) bytes of data.
+64 bytes from ip-172-31-6-189.eu-west-2.compute.internal (172.31.6.189): icmp_seq=1 ttl=64 time=0.439 ms
+64 bytes from ip-172-31-6-189.eu-west-2.compute.internal (172.31.6.189): icmp_seq=2 ttl=64 time=0.215 ms
+64 bytes from ip-172-31-6-189.eu-west-2.compute.internal (172.31.6.189): icmp_seq=3 ttl=64 time=0.343 ms
+64 bytes from ip-172-31-6-189.eu-west-2.compute.internal (172.31.6.189): icmp_seq=4 ttl=64 time=0.250 ms
+64 bytes from ip-172-31-6-189.eu-west-2.compute.internal (172.31.6.189): icmp_seq=5 ttl=64 time=0.271 ms
+64 bytes from ip-172-31-6-189.eu-west-2.compute.internal (172.31.6.189): icmp_seq=6 ttl=64 time=0.256 ms
+64 bytes from ip-172-31-6-189.eu-west-2.compute.internal (172.31.6.189): icmp_seq=7 ttl=64 time=0.246 ms
+64 bytes from ip-172-31-6-189.eu-west-2.compute.internal (172.31.6.189): icmp_seq=8 ttl=64 time=0.287 ms
+64 bytes from ip-172-31-6-189.eu-west-2.compute.internal (172.31.6.189): icmp_seq=9 ttl=64 time=0.264 ms
+64 bytes from ip-172-31-6-189.eu-west-2.compute.internal (172.31.6.189): icmp_seq=10 ttl=64 time=0.267 ms
+
+--- ec2-35-177-222-228.eu-west-2.compute.amazonaws.com ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9000ms
+rtt min/avg/max/mdev = 0.215/0.283/0.439/0.064 ms
