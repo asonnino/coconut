@@ -4,7 +4,6 @@ pragma solidity ^0.4.19;
 
 /**
  * @title Coconut threshold issuance credentials library
- * @author Mustafa Al-Bassam (mus@musalbas.com)
  */
 library Coconut {
     struct CoconutInstance {
