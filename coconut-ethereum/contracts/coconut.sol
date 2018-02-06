@@ -24,10 +24,10 @@ library Coconut {
      * @param sig two curve points
      * @return true if the token verifies, otherwise false
      */
-    function VerifyToken(CoconutInstance self, bytes32 clear_m, uint256[4] sig) public view returns (bool result) {
+    function VerifyToken(CoconutInstance self, uint256 clear_m, uint256[4] sig) public view returns (bool result) {
         uint256[4] memory aggr;
         (aggr[0], aggr[1], aggr[2], aggr[3]) = BN256G2.ECTwistMul(
-            uint256(clear_m),
+            clear_m,
             self.g2_y[0], self.g2_y[1], self.g2_y[2], self.g2_y[3]
         );
         (aggr[0], aggr[1], aggr[2], aggr[3]) = BN256G2.ECTwistAdd(
