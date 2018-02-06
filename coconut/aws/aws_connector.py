@@ -19,7 +19,7 @@ class Network():
 	# init
 	# ==================================================
 	def __init__(self):
-		self.ec2 = boto3.client('ec2')
+		self.ec2 = boto3.client('ec2', region_name='us-east-2')
 
 	
 	# ==================================================
@@ -171,7 +171,7 @@ if __name__ == '__main__':
 
 	# param
 	instance_id = 'i-0cdc943c545a4cfae'
-	address = 'ec2-18-217-87-226.us-east-2.compute.amazonaws.com'
+	address = 'ec2-18-219-97-113.us-east-2.compute.amazonaws.com'
 	username = 'ubuntu'
 	keyfile = '/Users/alberto/.ssh/alberto-aws.pem'
 

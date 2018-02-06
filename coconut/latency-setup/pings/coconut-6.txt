@@ -1,0 +1,15 @@
+PING ec2-13-231-5-110.ap-northeast-1.compute.amazonaws.com (13.231.5.110) 56(84) bytes of data.
+64 bytes from ec2-13-231-5-110.ap-northeast-1.compute.amazonaws.com (13.231.5.110): icmp_seq=1 ttl=46 time=247 ms
+64 bytes from ec2-13-231-5-110.ap-northeast-1.compute.amazonaws.com (13.231.5.110): icmp_seq=2 ttl=46 time=247 ms
+64 bytes from ec2-13-231-5-110.ap-northeast-1.compute.amazonaws.com (13.231.5.110): icmp_seq=3 ttl=46 time=247 ms
+64 bytes from ec2-13-231-5-110.ap-northeast-1.compute.amazonaws.com (13.231.5.110): icmp_seq=4 ttl=46 time=247 ms
+64 bytes from ec2-13-231-5-110.ap-northeast-1.compute.amazonaws.com (13.231.5.110): icmp_seq=5 ttl=46 time=247 ms
+64 bytes from ec2-13-231-5-110.ap-northeast-1.compute.amazonaws.com (13.231.5.110): icmp_seq=6 ttl=46 time=247 ms
+64 bytes from ec2-13-231-5-110.ap-northeast-1.compute.amazonaws.com (13.231.5.110): icmp_seq=7 ttl=46 time=247 ms
+64 bytes from ec2-13-231-5-110.ap-northeast-1.compute.amazonaws.com (13.231.5.110): icmp_seq=8 ttl=46 time=247 ms
+64 bytes from ec2-13-231-5-110.ap-northeast-1.compute.amazonaws.com (13.231.5.110): icmp_seq=9 ttl=46 time=247 ms
+64 bytes from ec2-13-231-5-110.ap-northeast-1.compute.amazonaws.com (13.231.5.110): icmp_seq=10 ttl=46 time=247 ms
+
+--- ec2-13-231-5-110.ap-northeast-1.compute.amazonaws.com ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9011ms
+rtt min/avg/max/mdev = 247.408/247.438/247.468/0.223 ms

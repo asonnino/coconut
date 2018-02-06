@@ -1,0 +1,10 @@
+ping -c 10 ec2-18-219-23-5.us-east-2.compute.amazonaws.com > coconut-1.txt
+ping -c 10 ec2-54-193-121-5.us-west-1.compute.amazonaws.com > coconut-2.txt
+ping -c 10 ec2-35-154-254-195.ap-south-1.compute.amazonaws.com > coconut-3.txt
+ping -c 10 ec2-54-255-241-51.ap-southeast-1.compute.amazonaws.com > coconut-4.txt
+ping -c 10 ec2-54-252-204-158.ap-southeast-2.compute.amazonaws.com > coconut-5.txt
+ping -c 10 ec2-13-231-5-110.ap-northeast-1.compute.amazonaws.com > coconut-6.txt
+ping -c 10 ec2-35-182-143-26.ca-central-1.compute.amazonaws.com > coconut-7.txt
+ping -c 10 ec2-52-59-191-2.eu-central-1.compute.amazonaws.com > coconut-8.txt
+ping -c 10 ec2-35-177-222-228.eu-west-2.compute.amazonaws.com > coconut-9.txt
+ping -c 10 ec2-18-231-146-219.sa-east-1.compute.amazonaws.com > coconut-10.txt
