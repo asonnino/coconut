@@ -24,10 +24,10 @@ library Coconut {
      * @param sig two curve points
      * @return true if the token verifies, otherwise false
      */
-    function VerifyToken(CoconutInstance self, uint256 clear_m, uint256[4] sig) public view returns (bool) {
+    function VerifyToken(CoconutInstance self, bytes32 clear_m, uint256[4] sig) public view returns (bool result) {
         uint256[4] memory aggr;
         (aggr[0], aggr[1], aggr[2], aggr[3]) = BN256G2.ECTwistMul(
-            clear_m,
+            uint256(clear_m),
             self.g2_y[0], self.g2_y[1], self.g2_y[2], self.g2_y[3]
         );
         (aggr[0], aggr[1], aggr[2], aggr[3]) = BN256G2.ECTwistAdd(
@@ -35,12 +35,18 @@ library Coconut {
             aggr[0], aggr[1], aggr[2], aggr[3]
         );
 
-        //return [sig[0], sig[1], aggr[0], aggr[1], aggr[2], aggr[3], sig[2], sig[3], self.g2[0], self.g2[1], self.g2[2], self.g2[3]];
+        uint256[12] memory indata;
+        (indata[0], indata[1]) = (sig[0], sig[1]);
+        (indata[2], indata[3], indata[4], indata[5]) = (aggr[1], aggr[0], aggr[3], aggr[2]);
+        (indata[6], indata[7]) = (sig[2], BN256G2.GetFieldModulus() - sig[3]);
+        (indata[8], indata[9], indata[10], indata[11]) = (self.g2[1], self.g2[0], self.g2[3], self.g2[2]);
 
-        Pairing.G1Point memory g1 = Pairing.G1Point(sig[0], sig[1]);
-        Pairing.G1Point memory h1 = Pairing.G1Point(sig[2], BN256G2.GetFieldModulus() - sig[3]);
-        Pairing.G2Point memory g2 = Pairing.G2Point([aggr[1], aggr[0]], [aggr[3], aggr[2]]);
-        Pairing.G2Point memory h2 = Pairing.G2Point([self.g2[1], self.g2[0]], [self.g2[3], self.g2[2]]);
-        return Pairing.pairingProd2(g1, g2, h1, h2);
+        uint256[1] memory outdata;
+        assembly {
+            staticcall(sub(gas, 2000), 8, indata, 384, outdata, 32)
+            pop
+        }
+
+        return outdata[0] != 0;
     }
 }
