@@ -1,0 +1,15 @@
+PING ec2-54-255-241-51.ap-southeast-1.compute.amazonaws.com (54.255.241.51) 56(84) bytes of data.
+64 bytes from ec2-54-255-241-51.ap-southeast-1.compute.amazonaws.com (54.255.241.51): icmp_seq=1 ttl=37 time=172 ms
+64 bytes from ec2-54-255-241-51.ap-southeast-1.compute.amazonaws.com (54.255.241.51): icmp_seq=2 ttl=37 time=172 ms
+64 bytes from ec2-54-255-241-51.ap-southeast-1.compute.amazonaws.com (54.255.241.51): icmp_seq=3 ttl=37 time=172 ms
+64 bytes from ec2-54-255-241-51.ap-southeast-1.compute.amazonaws.com (54.255.241.51): icmp_seq=4 ttl=37 time=172 ms
+64 bytes from ec2-54-255-241-51.ap-southeast-1.compute.amazonaws.com (54.255.241.51): icmp_seq=5 ttl=37 time=172 ms
+64 bytes from ec2-54-255-241-51.ap-southeast-1.compute.amazonaws.com (54.255.241.51): icmp_seq=6 ttl=37 time=172 ms
+64 bytes from ec2-54-255-241-51.ap-southeast-1.compute.amazonaws.com (54.255.241.51): icmp_seq=7 ttl=37 time=172 ms
+64 bytes from ec2-54-255-241-51.ap-southeast-1.compute.amazonaws.com (54.255.241.51): icmp_seq=8 ttl=37 time=172 ms
+64 bytes from ec2-54-255-241-51.ap-southeast-1.compute.amazonaws.com (54.255.241.51): icmp_seq=9 ttl=37 time=172 ms
+64 bytes from ec2-54-255-241-51.ap-southeast-1.compute.amazonaws.com (54.255.241.51): icmp_seq=10 ttl=37 time=172 ms
+
+--- ec2-54-255-241-51.ap-southeast-1.compute.amazonaws.com ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9012ms
+rtt min/avg/max/mdev = 172.473/172.523/172.609/0.526 ms

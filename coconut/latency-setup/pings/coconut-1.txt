@@ -1,0 +1,15 @@
+PING ec2-18-219-23-5.us-east-2.compute.amazonaws.com (18.219.23.5) 56(84) bytes of data.
+64 bytes from ec2-18-219-23-5.us-east-2.compute.amazonaws.com (18.219.23.5): icmp_seq=1 ttl=44 time=84.9 ms
+64 bytes from ec2-18-219-23-5.us-east-2.compute.amazonaws.com (18.219.23.5): icmp_seq=2 ttl=44 time=84.8 ms
+64 bytes from ec2-18-219-23-5.us-east-2.compute.amazonaws.com (18.219.23.5): icmp_seq=3 ttl=44 time=84.8 ms
+64 bytes from ec2-18-219-23-5.us-east-2.compute.amazonaws.com (18.219.23.5): icmp_seq=4 ttl=44 time=84.8 ms
+64 bytes from ec2-18-219-23-5.us-east-2.compute.amazonaws.com (18.219.23.5): icmp_seq=5 ttl=44 time=84.8 ms
+64 bytes from ec2-18-219-23-5.us-east-2.compute.amazonaws.com (18.219.23.5): icmp_seq=6 ttl=44 time=84.7 ms
+64 bytes from ec2-18-219-23-5.us-east-2.compute.amazonaws.com (18.219.23.5): icmp_seq=7 ttl=44 time=84.8 ms
+64 bytes from ec2-18-219-23-5.us-east-2.compute.amazonaws.com (18.219.23.5): icmp_seq=8 ttl=44 time=84.8 ms
+64 bytes from ec2-18-219-23-5.us-east-2.compute.amazonaws.com (18.219.23.5): icmp_seq=9 ttl=44 time=84.8 ms
+64 bytes from ec2-18-219-23-5.us-east-2.compute.amazonaws.com (18.219.23.5): icmp_seq=10 ttl=44 time=84.8 ms
+
+--- ec2-18-219-23-5.us-east-2.compute.amazonaws.com ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9015ms
+rtt min/avg/max/mdev = 84.795/84.852/84.902/0.320 ms
