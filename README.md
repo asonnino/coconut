@@ -6,13 +6,23 @@
 
 Coconut is selective disclosure credential scheme supporting distributed threshold issuance, public and private attributes, re-randomization, and multiple unlinkable selective attribute revelations. Coconut can be used by modern blockchains to ensure confidentiality, authenticity and availability even when a subset of credential issuing authorities are malicious or offline. Coconut uses short and computationally efficient credentials, and our evaluation shows that most Coconut cryptographic primitives take just a few milliseconds on average, with verification taking the longest time (10 milliseconds).
 
+
+## Pre-requisites
+**Coconut** is built on top of [petlib](https://github.com/gdanezis/petlib) and [bplib](https://github.com/gdanezis/bplib), make sure to follow [these instructions](https://github.com/gdanezis/petlib#pre-requisites) to install all the pre-requisites.
+
+
 ## Install
-**Coconut** is built on top of [petlib](https://github.com/gdanezis/petlib) and [bplib](https://github.com/gdanezis/bplib), you can install is as follows:
+If you have `pip` installed, you can install **Coconut** with the following command:
+```
+$ pip install coconut-lib
+```
+otherwise, you can build it manually as below:
 ```
 $ git clone https://github.com/asonnino/coconut
 $ cd coconut
 $ pip install -e .
 ```
+
 
 ## Test
 Tests can be run as follows:
