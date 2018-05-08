@@ -9,8 +9,8 @@ Coconut is selective disclosure credential scheme supporting distributed thresho
 ## Install
 **Coconut** is built on top of [petlib](https://github.com/gdanezis/petlib) and [bplib](https://github.com/gdanezis/bplib), you can install is as follows:
 ```
-$ git clone https://github.com/asonnino/coconut-new
-$ cd coconut-new
+$ git clone https://github.com/asonnino/coconut
+$ cd coconut
 $ pip install -e .
 ```
 
