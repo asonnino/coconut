@@ -4,7 +4,10 @@
 [![Build Status](https://travis-ci.org/asonnino/coconut.svg?branch=master)](https://travis-ci.org/asonnino/coconut)
 [![Documentation Status](https://readthedocs.org/projects/coconut-lib/badge/?version=latest)](http://coconut-lib.readthedocs.io/en/latest/?badge=latest)
 
-Coconut is selective disclosure credential scheme supporting distributed threshold issuance, public and private attributes, re-randomization, and multiple unlinkable selective attribute revelations. Coconut can be used by modern blockchains to ensure confidentiality, authenticity and availability even when a subset of credential issuing authorities are malicious or offline. Coconut uses short and computationally efficient credentials, and our evaluation shows that most Coconut cryptographic primitives take just a few milliseconds on average, with verification taking the longest time (10 milliseconds).
+**Coconut** is a novel selective disclosure credential scheme supporting distributed threshold issuance, public and private attributes, re-randomization, and multiple unlinkable selective attribute revelations. Coconut integrates with blockchains to ensure confidentiality, authenticity and availability even when a subset of credential issuing authorities are malicious or offline. We implement and evaluate a generic Coconut smart contract library for [Chainspace](https://github.com/asonnino/coconut-chainspace) and [Ethereum](https://github.com/asonnino/coconut-ethereum); and present three applications related to anonymous payments, electronic petitions, and distribution of proxies for censorship resistance.
+Coconut uses short and computationally efficient credentials, and our [evaluation](https://github.com/asonnino/coconut-timing) shows that most Coconut cryptographic primitives take just a few milliseconds on average, with verification taking the longest time (10 milliseconds). 
+
+A link to the full paper can be found here: [https://arxiv.org/abs/1802.07344](https://arxiv.org/abs/1802.07344)
 
 
 ## Pre-requisites
