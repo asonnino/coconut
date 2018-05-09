@@ -29,6 +29,10 @@ version = u''
 release = u'1.0.0'
 
 
+sys.path.insert(0,os.path.abspath(r".."))
+import coconut
+
+
 # -- General configuration ---------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
