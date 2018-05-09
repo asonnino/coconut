@@ -73,7 +73,7 @@ or simply using tox:
 
 Coconut Modules
 ---------------
-.. automodule:: coconut
+
 
 .. automodule:: coconut.scheme
 
