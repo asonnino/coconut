@@ -75,7 +75,27 @@ Coconut Modules
 --------------
 .. automodule:: coconut
 
+.. automodule:: coconut.scheme
 
+.. autofunction:: coconut.scheme.setup
+
+.. autofunction:: coconut.scheme.ttp_keygen
+
+.. autofunction:: coconut.scheme.aggregate_vk
+
+.. autofunction:: coconut.scheme.prepare_blind_sign
+
+.. autofunction:: coconut.scheme.blind_sign
+
+.. autofunction:: coconut.scheme.unblind
+
+.. autofunction:: coconut.scheme.aggregate_sigma
+
+.. autofunction:: coconut.scheme.randomize
+
+.. autofunction:: coconut.scheme.show_blind_sign
+
+.. autofunction:: coconut.scheme.blind_verify
 
 
 Indices and tables
