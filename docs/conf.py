@@ -165,6 +165,9 @@ texinfo_documents = [
 
 # -- Extension configuration -------------------------------------------------
 
+add_module_names = False
+add_function_parentheses = True
+
 # -- Options for intersphinx extension ---------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.
