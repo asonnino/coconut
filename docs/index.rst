@@ -16,8 +16,6 @@ Welcome to Coconut's documentation!
     :target: https://readthedocs.org/projects/coconut-lib/?badge=latest
     :alt: Documentation Status
 
-Pre-requisites
---------------
 
 **Coconut** is a novel selective disclosure credential scheme supporting distributed threshold issuance, public and private attributes, re-randomization, and multiple unlinkable selective attribute revelations. Coconut integrates with blockchains to ensure confidentiality, authenticity and availability even when a subset of credential issuing authorities are malicious or offline. Coconut uses short and computationally efficient credentials, and our evaluation_ shows that most Coconut cryptographic primitives take just a few milliseconds on average, with verification taking the longest time (10 milliseconds). We implement and evaluate a generic Coconut smart contract library for Chainspace_ and Ethereum_.
 
@@ -27,3 +25,32 @@ A link to the full paper is available here_.
 .. _Chainspace: https://github.com/asonnino/coconut-chainspace
 .. _Ethereum: https://github.com/asonnino/coconut-ethereum
 .. _here: https://arxiv.org/abs/1802.07344](https://arxiv.org/abs/1802.07344
+
+
+Pre-requisites
+--------------
+**Coconut** is built on top of petlib_ and bplib_, make sure to follow `these instructions`_ to install all the pre-requisites.
+
+.. _petlib: https://github.com/gdanezis/petlib
+.. _bplib: https://github.com/gdanezis/bplib
+.. _these instructions: https://github.com/gdanezis/petlib#pre-requisites
+
+
+Install
+--------------
+
+If you have `pip` installed, you can install **Coconut** with the following command:
+
+.. code-block:: python
+   
+   pip install coconut-lib
+
+
+otherwise, you can build it manually as below:
+
+.. code-block:: none
+
+    git clone https://github.com/asonnino/coconut
+    cd coconut
+    pip install -e .
+
