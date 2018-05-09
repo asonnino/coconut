@@ -33,7 +33,7 @@ Pre-requisites
 
 .. _petlib: https://github.com/gdanezis/petlib
 .. _bplib: https://github.com/gdanezis/bplib
-.. _these instructions: https://github.com/gdanezis/petlib#pre-requisites
+.. _`these instructions`: https://github.com/gdanezis/petlib#pre-requisites
 
 
 Install
