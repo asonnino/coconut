@@ -37,7 +37,7 @@ Pre-requisites
 
 
 Install
---------------
+-------
 
 If you have `pip` installed, you can install **Coconut** with the following command:
 
@@ -56,7 +56,7 @@ otherwise, you can build it manually as below:
 
 
 Test
---------------
+----
 
 Tests can be run as follows:
 
@@ -72,7 +72,7 @@ or simply using tox:
 
 
 Coconut Modules
---------------
+---------------
 .. automodule:: coconut
 
 .. automodule:: coconut.scheme
@@ -99,7 +99,7 @@ Coconut Modules
 
 
 Indices and tables
---------------
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
@@ -107,7 +107,7 @@ Indices and tables
 
 
 License
---------------
+-------
 `The BSD license`_ 
 
 .. _`The BSD license`: https://opensource.org/licenses/BSD-3-Clause
