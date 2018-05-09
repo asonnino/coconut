@@ -41,7 +41,7 @@ Install
 
 If you have `pip` installed, you can install **Coconut** with the following command:
 
-.. code-block:: python
+.. code-block:: none
    
    pip install coconut-lib
 
@@ -53,4 +53,27 @@ otherwise, you can build it manually as below:
     git clone https://github.com/asonnino/coconut
     cd coconut
     pip install -e .
+
+
+Test
+--------------
+
+Tests can be run as follows:
+
+.. code-block:: none
+
+	pytest -v --cov=coconut tests/
+
+or simply using tox:
+
+.. code-block:: none
+
+	tox
+
+
+License
+--------------
+`The BSD license`_ 
+
+.. _`The BSD license`: https://opensource.org/licenses/BSD-3-Clause
 
