@@ -71,6 +71,21 @@ or simply using tox:
 	tox
 
 
+Coconut Modules
+--------------
+.. automodule:: coconut
+
+
+
+
+Indices and tables
+--------------
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
+
 License
 --------------
 `The BSD license`_ 
