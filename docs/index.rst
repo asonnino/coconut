@@ -24,7 +24,7 @@ A link to the full paper is available here_.
 .. _evaluation: https://github.com/asonnino/coconut-timing
 .. _Chainspace: https://github.com/asonnino/coconut-chainspace
 .. _Ethereum: https://github.com/asonnino/coconut-ethereum
-.. _here: https://arxiv.org/abs/1802.07344](https://arxiv.org/abs/1802.07344
+.. _here: https://arxiv.org/abs/1802.07344
 
 
 Pre-requisites
