@@ -239,7 +239,7 @@ def blind_verify(params, aggr_vk, sigma, kappa, nu, pi_v, public_m=[]):
 	Returns:
 		- `ret` (integrity): whether the credential verifies
 	"""
-	(G, o, g1, h1, g2, e) = params
+	(G, o, g1, hs, g2, e) = params
 	(g2, _, beta) = aggr_vk
 	(h, s) = sigma
 	private_m_len = len(pi_v[1])
