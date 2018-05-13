@@ -43,7 +43,7 @@ def verify_pi_s(params, gamma, ciphertext, cm, proof):
 	(G, o, g1, hs, g2, e) = params
 	(a, b) = zip(*ciphertext)
 	(c, rk, rm, rr) = proof
-	assert len(ciphertext) == len(rk) and len(ciphertext) == len(rm)
+	assert len(ciphertext) == len(rk)
 	# re-compute h
 	h = G.hashG1(cm.export())
 	# re-compute witnesses commitments
