@@ -13,7 +13,7 @@ def test_threshold_authorities():
 	(cm, c, pi_s) = prepare_blind_sign(params, gamma, private_m, public_m=public_m)
 
 	# generate key
-	(sk, vk) = ttp_keygen(params, t, n, q)
+	(sk, vk) = ttp_keygen(params, t, n)
 
 	# aggregate verification keys
 	aggr_vk = aggregate_vk(params, vk)
@@ -49,7 +49,7 @@ def test_multi_authorities():
 	(cm, c, pi_s) = prepare_blind_sign(params, gamma, private_m, public_m=public_m)
 
 	# generate key
-	(sk, vk) = ttp_keygen(params, n, n, q)
+	(sk, vk) = ttp_keygen(params, n, n)
 
 	# aggregate verification keys
 	aggr_vk = aggregate_vk(params, vk, threshold=False)

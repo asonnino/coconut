@@ -17,7 +17,7 @@ setup(
     name='coconut-lib',  # Required
 
     # Versions.
-    version='1.0.3',  # Required
+    version='1.1.0',  # Required
 
     # One-line description.
     description='Threshold Issuance Selective Disclosure Credentials.',  # Required
@@ -62,7 +62,7 @@ setup(
     # project page.
     #
     # Note that this is a string of words separated by whitespace, not a list.
-    keywords='anonymous-credentials credentials blockchains distributed-ledgers',  # Optional
+    keywords='anonymous-credentials threshold-cryptography blockchains distributed-ledgers',  # Optional
 
     # You can just specify package directories manually here if your project is
     # simple. Or you can use find_packages().

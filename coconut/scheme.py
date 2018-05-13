@@ -24,7 +24,7 @@ def setup(q=1):
 	return (G, o, g1, hs, g2, e)
 
 
-def ttp_keygen(params, t, n, q):
+def ttp_keygen(params, t, n):
 	"""
 	Generate keys for threshold signature (executed by a TTP).
 
@@ -40,6 +40,7 @@ def ttp_keygen(params, t, n, q):
 	"""
 	assert n >= t and t > 0 and q > 0
 	(G, o, g1, hs, g2, e) = params
+	q = len(hs)
 	# generate polynomials
 	v = [o.random() for _ in range(0,t)]
 	w = [[o.random() for _ in range(0,t)] for __ in range(q)]
@@ -190,7 +191,7 @@ def randomize(params, sigma):
 		- `sigma_prime` (G1Elem, G1Elem): randomized credential
 	"""
 	(G, o, g1, hs, g2, e) = params
-	(h , s) = sig
+	(h , s) = sigma
 	r = o.random()
 	sigma_prime = (r*h , r*s)
 	return sigma_prime
