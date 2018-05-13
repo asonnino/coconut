@@ -38,9 +38,9 @@ def ttp_keygen(params, t, n):
 		- `sk` [Bn]: array containing the secret key of each authority
 		- `vk` [(G2Elem, G2Elem, [G2Elem])]: array containing the verification key of each authority
 	"""
-	assert n >= t and t > 0 and q > 0
 	(G, o, g1, hs, g2, e) = params
 	q = len(hs)
+	assert n >= t and t > 0 and q > 0
 	# generate polynomials
 	v = [o.random() for _ in range(0,t)]
 	w = [[o.random() for _ in range(0,t)] for __ in range(q)]
