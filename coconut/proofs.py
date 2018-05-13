@@ -13,19 +13,11 @@ def to_challenge(elements):
     return Bn.from_binary(Chash)
 
 
-def is_same_length(*args):
-	""" check if arguments are of the same length """
-	assert len(args) > 1
-	for i in range(1,len(args)):
-		if len(args[i-1]) != len(args[i]): return False
-	return True
-
-
 def make_pi_s(params, gamma, ciphertext, cm, k, r, public_m, private_m):
 	""" prove correctness of ciphertext and cm """
 	(G, o, g1, hs, g2, e) = params
 	attributes = private_m + public_m
-	assert is_same_length(ciphertext, k, private_m)
+	assert len(ciphertext) == len(k) and len(ciphertext) == len(private_m)
 	assert len(attributes) <= len(hs)
 	# create the witnesses
 	wr = o.random()
@@ -51,7 +43,7 @@ def verify_pi_s(params, gamma, ciphertext, cm, proof):
 	(G, o, g1, hs, g2, e) = params
 	(a, b) = zip(*ciphertext)
 	(c, rk, rm, rr) = proof
-	assert is_same_length(ciphertext, rk)
+	assert len(ciphertext) == len(rk) and len(ciphertext) == len(rm)
 	# re-compute h
 	h = G.hashG1(cm.export())
 	# re-compute witnesses commitments
