@@ -21,7 +21,7 @@ class Mock(MagicMock):
     def __getattr__(cls, name):
             return Mock()
 
-MOCK_MODULES = ['bplib', 'bplib.bp', 'bplib.bp.BpGroup', 'bplib.bp.G2Elem']
+MOCK_MODULES = ['petlib', 'petlib.bn', 'petlib.bn.Bn', 'bplib', 'bplib.bp', 'bplib.bp.BpGroup', 'bplib.bp.G2Elem']
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 sys.path.insert(0, os.path.abspath('..'))
