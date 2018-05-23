@@ -3,8 +3,8 @@ from coconut.scheme import *
 
 def test_threshold_authorities():
 	q = 7 # number of messages
-	private_m = [10] * 2 # hidden message
-	public_m = [3] * 1 # clear messages
+	private_m = [10] * 2 # private message
+	public_m = [3] * 1 # public messages
 	t, n = 2, 3 # number of authorities
 	params = setup(q)
 	(d, gamma) = elgamal_keygen(params) # El-Gamal keypair
