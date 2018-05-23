@@ -34,7 +34,6 @@ Example:
 
 	>>> # verify credentials
 	>>> assert blind_verify(params, aggr_vk, sigma, kappa, nu, pi_v, public_m=public_m)
-
 """
 from bplib.bp import BpGroup, G2Elem
 from coconut.utils import *
