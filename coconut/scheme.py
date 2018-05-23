@@ -32,7 +32,7 @@ Example:
 	>>> # generate kappa and proof of correctness
 	>>> (kappa, nu, pi_v) = show_blind_sign(params, aggr_vk, sigma, private_m)
 
-	>>> # verify signature
+	>>> # verify credentials
 	>>> assert blind_verify(params, aggr_vk, sigma, kappa, nu, pi_v, public_m=public_m)
 
 """
