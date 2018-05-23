@@ -1,9 +1,9 @@
 """ 
 Coconut threshold credentials scheme. 
 Example:
-	>>> q = 7 # maximum number of messages
-	>>> private_m = [10] * 2 # private message
-	>>> public_m = [3] * 1 # public messages
+	>>> q = 7 # maximum number of attributes
+	>>> private_m = [10] * 2 # private attributes
+	>>> public_m = [3] * 1 # public attributes
 	>>> t, n = 2, 3 # number of authorities
 	>>> params = setup(q)
 	>>> (d, gamma) = elgamal_keygen(params) # El-Gamal keypair

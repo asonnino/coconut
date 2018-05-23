@@ -2,9 +2,9 @@ from coconut.scheme import *
 
 
 def test_threshold_authorities():
-	q = 7 # number of messages
-	private_m = [10] * 2 # private message
-	public_m = [3] * 1 # public messages
+	q = 7 # number of attributes
+	private_m = [10] * 2 # private attributes
+	public_m = [3] * 1 # public attributes
 	t, n = 2, 3 # number of authorities
 	params = setup(q)
 	(d, gamma) = elgamal_keygen(params) # El-Gamal keypair
@@ -33,14 +33,14 @@ def test_threshold_authorities():
 	# generate kappa and proof of correctness
 	(kappa, nu, pi_v) = show_blind_sign(params, aggr_vk, sigma, private_m)
 
-	# verify signature
+	# verify credentials
 	assert blind_verify(params, aggr_vk, sigma, kappa, nu, pi_v, public_m=public_m)
 
 
 def test_multi_authorities():
-	q = 7 # number of messages
-	private_m = [10] * 2 # hidden message
-	public_m = [3] * 1 # clear messages
+	q = 7 # number of attributes
+	private_m = [10] * 2 # private attributes
+	public_m = [3] * 1 # public attributes
 	n = 3 # number of authorities
 	params = setup(q)
 	(d, gamma) = elgamal_keygen(params) # El-Gamal keypair
@@ -69,7 +69,7 @@ def test_multi_authorities():
 	# generate kappa and proof of correctness
 	(kappa, nu, pi_v) = show_blind_sign(params, aggr_vk, sigma, private_m)
 
-	# verify signature
+	# verify credentials
 	assert blind_verify(params, aggr_vk, sigma, kappa, nu, pi_v, public_m=public_m)
 
 
