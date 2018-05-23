@@ -6,6 +6,10 @@
 Welcome to Coconut's documentation! 
 ===================================
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
 .. image:: https://img.shields.io/badge/license-BSD-brightgreen.svg
     :target: https://github.com/asonnino/coconut/blob/master/LICENSE
 
@@ -99,7 +103,7 @@ Coconut Modules
 
 
 Indices and tables
-------------------
+==================
 
 * :ref:`genindex`
 * :ref:`modindex`
@@ -107,7 +111,7 @@ Indices and tables
 
 
 License
--------
+=======
 `The BSD license`_ 
 
 .. _`The BSD license`: https://opensource.org/licenses/BSD-3-Clause
