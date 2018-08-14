@@ -1,6 +1,6 @@
 # Coconut
 
-[![license](https://img.shields.io/badge/license-BSD-brightgreen.svg)](https://github.com/asonnino/coconut/blob/master/LICENSE) 
+[![license](https://img.shields.io/badge/license-apache2-brightgreen.svg)](https://github.com/asonnino/coconut/blob/master/LICENSE) 
 [![Build Status](https://travis-ci.org/asonnino/coconut.svg?branch=master)](https://travis-ci.org/asonnino/coconut)
 [![Documentation Status](https://readthedocs.org/projects/coconut-lib/badge/?version=latest)](http://coconut-lib.readthedocs.io/en/latest/?badge=latest)
 
