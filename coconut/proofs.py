@@ -69,7 +69,7 @@ def make_pi_v(params, aggr_vk, sigma, private_m, t):
 	c = to_challenge([g1, g2, alpha, Aw, Bw]+hs+beta)
 	# create responses 
 	rm = [(wm[i] - c*private_m[i]) % o for i in range(len(private_m))]
-	rt = wt - c*t % o
+	rt = (wt - c*t) % o
 	return (c, rm, rt)
 
 def verify_pi_v(params, aggr_vk, sigma, kappa, nu, pi_v):
