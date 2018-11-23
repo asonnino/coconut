@@ -10,67 +10,61 @@ def test_threshold_authorities():
 	(d, gamma) = elgamal_keygen(params) # El-Gamal keypair
 	
 	# generate commitment and encryption
-	(cm, c, pi_s) = prepare_blind_sign(params, gamma, private_m, public_m=public_m)
+	Lambda = prepare_blind_sign(params, gamma, private_m, public_m=public_m)
 
 	# generate key
 	(sk, vk) = ttp_keygen(params, t, n)
 
 	# aggregate verification keys
-	aggr_vk = aggregate_vk(params, vk)
+	aggr_vk = agg_key(params, vk)
 
 	# bind sign
-	sigs_tilde = [blind_sign(params, ski, cm, c, gamma, pi_s, public_m=public_m) for ski in sk]
+	sigs_tilde = [blind_sign(params, ski, gamma, Lambda, public_m=public_m) for ski in sk]
 
 	# unblind
 	sigs = [unblind(params, sigma_tilde, d) for sigma_tilde in sigs_tilde]
 
 	# aggregate credentials
-	sigma = aggregate_sigma(params, sigs)
+	sigma = agg_cred(params, sigs)
 
-	# randomize credentials
-	sigma = randomize(params, sigma)
-
-	# generate kappa and proof of correctness
-	(kappa, nu, pi_v) = show_blind_sign(params, aggr_vk, sigma, private_m)
+	# randomize credentials and generate any cryptographic material to verify them
+	Theta = prove_cred(params, aggr_vk, sigma, private_m)
 
 	# verify credentials
-	assert blind_verify(params, aggr_vk, sigma, kappa, nu, pi_v, public_m=public_m)
+	assert verify_cred(params, aggr_vk, Theta, public_m=public_m)
 
 
 def test_multi_authorities():
-	q = 7 # number of attributes
-	private_m = [10] * 2 # private attributes
-	public_m = [3] * 1 # public attributes
-	n = 3 # number of authorities
-	params = setup(q)
-	(d, gamma) = elgamal_keygen(params) # El-Gamal keypair
-	
-	# generate commitment and encryption
-	(cm, c, pi_s) = prepare_blind_sign(params, gamma, private_m, public_m=public_m)
+    q = 7 # number of attributes
+    private_m = [10] * 2 # private attributes
+    public_m = [3] * 1 # public attributes
+    n = 3 # number of authorities
+    params = setup(q)
+    (d, gamma) = elgamal_keygen(params) # El-Gamal keypair
 
-	# generate key
-	(sk, vk) = ttp_keygen(params, n, n)
+    # generate commitment and encryption
+    Lambda = prepare_blind_sign(params, gamma, private_m, public_m=public_m)
 
-	# aggregate verification keys
-	aggr_vk = aggregate_vk(params, vk, threshold=False)
+    # generate key
+    (sk, vk) = ttp_keygen(params, n, n)
 
-	# bind sign
-	sigs_tilde = [blind_sign(params, ski, cm, c, gamma, pi_s, public_m=public_m) for ski in sk]
+    # aggregate verification keys
+    aggr_vk = agg_key(params, vk, threshold=False)
 
-	# unblind
-	sigs = [unblind(params, sigma_tilde, d) for sigma_tilde in sigs_tilde]
+    # bind sign
+    sigs_tilde = [blind_sign(params, ski, gamma, Lambda, public_m=public_m) for ski in sk]
 
-	# aggregate credentials
-	sigma = aggregate_sigma(params, sigs, threshold=False)
+    # unblind
+    sigs = [unblind(params, sigma_tilde, d) for sigma_tilde in sigs_tilde]
 
-	# randomize credentials
-	sigma = randomize(params, sigma)
+    # aggregate credentials
+    sigma = agg_cred(params, sigs, threshold=False)
 
-	# generate kappa and proof of correctness
-	(kappa, nu, pi_v) = show_blind_sign(params, aggr_vk, sigma, private_m)
+    # randomize credentials and generate any cryptographic material to verify them
+    Theta = prove_cred(params, aggr_vk, sigma, private_m)
 
-	# verify credentials
-	assert blind_verify(params, aggr_vk, sigma, kappa, nu, pi_v, public_m=public_m)
+    # verify credentials
+    assert verify_cred(params, aggr_vk, Theta, public_m=public_m)
 
 
 	
