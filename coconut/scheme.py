@@ -209,7 +209,8 @@ def agg_cred(params, sigs, threshold=True):
     # aggregate sigature
     (h, s) = zip(*filter)
     aggr_s = ec_sum([l[i]*s[i] for i in range(len(filter))])
-    return (h[0], aggr_s)
+    aggr_sigma = (h[0], aggr_s)
+    return aggr_sigma
 
 
 def prove_cred(params, aggr_vk, sigma, private_m):
