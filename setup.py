@@ -17,7 +17,7 @@ setup(
     name='coconut-lib',  # Required
 
     # Versions.
-    version='1.1.1',  # Required
+    version='1.2.1',  # Required
 
     # One-line description.
     description='Threshold Issuance Selective Disclosure Credentials.',  # Required
