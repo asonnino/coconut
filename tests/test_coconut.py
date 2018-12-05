@@ -48,7 +48,8 @@ def test_multi_authority():
     Lambda = prepare_blind_sign(params, gamma, private_m, public_m=public_m)
 
     # generate key
-    (sk, vk) = ttp_keygen(params, n, n)
+    keys = [keygen(params) for _ in range(n)]
+    (sk, vk) = zip(*keys)
 
     # aggregate verification keys
     aggr_vk = agg_key(params, vk, threshold=False)
