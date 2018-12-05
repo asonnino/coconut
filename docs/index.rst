@@ -85,7 +85,9 @@ Coconut Modules
 
 .. autofunction:: coconut.scheme.ttp_keygen
 
-.. autofunction:: coconut.scheme.aggregate_vk
+.. autofunction:: coconut.scheme.keygen
+
+.. autofunction:: coconut.scheme.agg_key
 
 .. autofunction:: coconut.scheme.prepare_blind_sign
 
@@ -93,13 +95,11 @@ Coconut Modules
 
 .. autofunction:: coconut.scheme.unblind
 
-.. autofunction:: coconut.scheme.aggregate_sigma
+.. autofunction:: coconut.scheme.agg_cred
 
-.. autofunction:: coconut.scheme.randomize
+.. autofunction:: coconut.scheme.prove_cred
 
-.. autofunction:: coconut.scheme.show_blind_sign
-
-.. autofunction:: coconut.scheme.blind_verify
+.. autofunction:: coconut.scheme.verify_cred
 
 
 Indices and tables

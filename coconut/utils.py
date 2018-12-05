@@ -46,6 +46,7 @@ def lagrange_basis(indexes, o, x=0):
         l.append((numerator * denominator.mod_inverse(o)) % o)
     return l
 
+
 # ==================================================
 # other
 # ==================================================
