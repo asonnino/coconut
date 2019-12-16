@@ -13,45 +13,50 @@ def to_challenge(elements):
     return Bn.from_binary(Chash)
 
 
-def make_pi_s(params, gamma, ciphertext, cm, k, r, public_m, private_m):
+def make_pi_s(params, keypair, ciphertext, cm, k, r, public_m, private_m):
 	""" prove correctness of ciphertext and cm """
 	(G, o, g1, hs, g2, e) = params
+	(d, gamma) = keypair
 	attributes = private_m + public_m
 	assert len(ciphertext) == len(k) and len(ciphertext) == len(private_m)
 	assert len(attributes) <= len(hs)
 	# create the witnesses
+	wd = o.random()
 	wr = o.random()
 	wk = [o.random() for _ in k]
 	wm = [o.random() for _ in attributes]
 	# compute h
 	h = G.hashG1(cm.export())
 	# compute the witnesses commitments
+	Gw = wd*g1
 	Aw = [wki*g1 for wki in wk]
 	Bw = [wk[i]*gamma + wm[i]*h for i in range(len(private_m))]
 	Cw = wr*g1 + ec_sum([wm[i]*hs[i] for i in range(len(attributes))])
 	# create the challenge
-	c = to_challenge([g1, g2, cm, h, Cw]+hs+Aw+Bw)
+	c = to_challenge([g1, g2, cm, h, Cw, Gw]+hs+Aw+Bw)
 	# create responses
+	rd = (wd - c * d) % o
 	rr = (wr - c * r) % o
 	rk = [(wk[i] - c*k[i]) % o for i in range(len(wk))]
 	rm = [(wm[i] - c*attributes[i]) % o for i in range(len(wm))]
-	return (c, rk, rm, rr)
+	return (c, rd, rk, rm, rr)
 
 
 def verify_pi_s(params, gamma, ciphertext, cm, proof):
 	""" verify orrectness of ciphertext and cm """
 	(G, o, g1, hs, g2, e) = params
 	(a, b) = zip(*ciphertext)
-	(c, rk, rm, rr) = proof
+	(c, rd, rk, rm, rr) = proof
 	assert len(ciphertext) == len(rk)
 	# re-compute h
 	h = G.hashG1(cm.export())
 	# re-compute witnesses commitments
+	Gw = c*gamma + rd*g1
 	Aw = [c*a[i] + rk[i]*g1 for i in range(len(rk))]
 	Bw = [c*b[i] + rk[i]*gamma + rm[i]*h for i in range(len(ciphertext))]
 	Cw = c*cm + rr*g1 + ec_sum([rm[i]*hs[i] for i in range(len(rm))])
 	# compute the challenge prime
-	return c == to_challenge([g1, g2, cm, h, Cw]+hs+Aw+Bw)
+	return c == to_challenge([g1, g2, cm, h, Cw, Gw]+hs+Aw+Bw)
 
 
 def make_pi_v(params, aggr_vk, sigma, private_m, t):

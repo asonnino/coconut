@@ -130,7 +130,7 @@ def agg_key(params, vks, threshold=True):
     return aggr_vk
 
 
-def prepare_blind_sign(params, gamma, private_m, public_m=[]):
+def prepare_blind_sign(params, keypair, private_m, public_m=[]):
     """
     Build cryptographic material for blind sign.
 
@@ -152,11 +152,12 @@ def prepare_blind_sign(params, gamma, private_m, public_m=[]):
     cm = r*g1 + ec_sum([attributes[i]*hs[i] for i in range(len(attributes))])
     # build El Gamal encryption
     h = G.hashG1(cm.export())
+    (_, gamma) = keypair
     enc = [elgamal_enc(params, gamma, m, h) for m in private_m]
     (a, b, k) = zip(*enc)
     c = list(zip(a, b))
     # build proofs
-    pi_s = make_pi_s(params, gamma, c, cm, k, r, public_m, private_m)
+    pi_s = make_pi_s(params, keypair, c, cm, k, r, public_m, private_m)
     Lambda = (cm, c, pi_s)
     return Lambda
 

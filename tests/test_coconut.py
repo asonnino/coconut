@@ -7,10 +7,11 @@ def test_threshold_authority():
     public_m = [3] * 1 # public attributes
     t, n = 5, 7 # threshold parameter and number of authorities
     params = setup(q)
-    (d, gamma) = elgamal_keygen(params) # El-Gamal keypair
+    keypair = elgamal_keygen(params) # El-Gamal keypair
+    (d, gamma) = keypair
 
     # generate commitment and encryption
-    Lambda = prepare_blind_sign(params, gamma, private_m, public_m=public_m)
+    Lambda = prepare_blind_sign(params, keypair, private_m, public_m=public_m)
 
     # generate key
     (sk, vk) = ttp_keygen(params, t, n)
@@ -42,10 +43,11 @@ def test_multi_authority():
     public_m = [3] * 1 # public attributes
     n = 3 # number of authorities
     params = setup(q)
-    (d, gamma) = elgamal_keygen(params) # El-Gamal keypair
+    keypair = elgamal_keygen(params) # El-Gamal keypair
+    (d, gamma) = keypair
 
     # generate commitment and encryption
-    Lambda = prepare_blind_sign(params, gamma, private_m, public_m=public_m)
+    Lambda = prepare_blind_sign(params, keypair, private_m, public_m=public_m)
 
     # generate key
     keys = [keygen(params) for _ in range(n)]
@@ -70,4 +72,9 @@ def test_multi_authority():
     assert verify_cred(params, aggr_vk, Theta, public_m=public_m)
 
 
-	
+if __name__ == "__main__":
+    test_threshold_authority()
+    print("test_threshold_authority() passed!")
+    test_multi_authority()
+    print("test_multi_authority() passed!")
+
