@@ -1,5 +1,6 @@
 """ Utils supporting coconut """
 from bplib.bp import BpGroup
+from petlib.bn import Bn
 
 
 # ==================================================
@@ -32,7 +33,7 @@ def elgamal_dec(params, d, c):
 # ==================================================
 def poly_eval(coeff, x):
 	""" evaluate a polynomial defined by the list of coefficient coeff at point x """
-	return sum([coeff[i] * (x ** i) for i in range(len(coeff))])
+	return sum([coeff[i] * (Bn(x) ** i) for i in range(len(coeff))])
 
 def lagrange_basis(indexes, o, x=0):
     """ generates all lagrange basis polynomials """

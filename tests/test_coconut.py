@@ -5,7 +5,7 @@ def test_threshold_authority():
     q = 7 # number of attributes
     private_m = [10] * 2 # private attributes
     public_m = [3] * 1 # public attributes
-    t, n = 5, 7 # threshold parameter and number of authorities
+    t, n = 8, 10 # threshold parameter and number of authorities
     params = setup(q)
     (d, gamma) = elgamal_keygen(params) # El-Gamal keypair
 
@@ -16,7 +16,7 @@ def test_threshold_authority():
     (sk, vk) = ttp_keygen(params, t, n)
 
     # aggregate verification keys
-    vk = list(vk[:5]) + [None] + list(vk[6:7])
+    vk[6] = None
     aggr_vk = agg_key(params, vk)
 
     # bind sign
@@ -26,7 +26,7 @@ def test_threshold_authority():
     sigs = [unblind(params, sigma_tilde, d) for sigma_tilde in sigs_tilde]
 
     # aggregate credentials
-    sigs = [None] + sigs[1:4] + [None] + sigs[5:7]
+    sigs[0] = sigs[5] = None
     sigma = agg_cred(params, sigs)
 
     # randomize credentials and generate any cryptographic material to verify them
