@@ -3,6 +3,13 @@ from bplib.bp import BpGroup
 from petlib.bn import Bn
 
 
+class CocoException(Exception):
+    pass
+
+def coco_ensure(cond, message):
+    if not cond:
+        raise CocoException(message)
+
 # ==================================================
 # El-Gamal encryption scheme
 # ==================================================
@@ -57,5 +64,3 @@ def ec_sum(list):
 	for i in range(1,len(list)):
 		ret = ret + list[i]
 	return ret
-
-

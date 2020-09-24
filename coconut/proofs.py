@@ -53,6 +53,43 @@ def verify_pi_s(params, gamma, ciphertext, cm, proof):
 	# compute the challenge prime
 	return c == to_challenge([g1, g2, cm, h, Cw]+hs+Aw+Bw)
 
+def make_pi_s_up(params, Ls, commits, cm, r, public_m, private_m):
+	""" prove correctness of ciphertext and cm """
+	(G, o, g1, hs, h_blind, g2, e) = params
+	attributes = private_m + public_m
+	assert len(commits) == len(private_m)
+	assert len(attributes) <= len(hs)
+	# create the witnesses
+	wr = o.random()
+	wL = [o.random() for _ in Ls]
+	wm = [o.random() for _ in attributes]
+	# compute h
+	h = G.hashG1(cm.export())
+	# compute the witnesses commitments
+	Com_w = [wL[i]*h_blind + wm[i]*h for i in range(len(private_m))]
+	Cw = wr*g1 + ec_sum([wm[i]*hs[i] for i in range(len(attributes))])
+	# create the challenge
+	c = to_challenge([g1, g2, cm, h, Cw]+hs+commits+Com_w)
+	# create responses
+	rr = (wr - c * r) % o
+	rL = [(wL[i] - c*Ls[i]) % o for i in range(len(wL))]
+	rm = [(wm[i] - c*attributes[i]) % o for i in range(len(wm))]
+	return (c, rL, rm, rr)
+
+
+def verify_pi_s_up(params, commits, cm, proof):
+	""" verify orrectness of ciphertext and cm """
+	(G, o, g1, hs, h_blind, g2, e) = params
+	(c, rL, rm, rr) = proof
+	assert len(commits) == len(rL)
+	# re-compute h
+	h = G.hashG1(cm.export())
+	# re-compute witnesses commitments
+	Com_w = [c*commits[i] + rL[i] * h_blind + rm[i] * h for i in range(len(commits))]
+	Cw = c*cm + rr*g1 + ec_sum([rm[i]*hs[i] for i in range(len(rm))])
+	# compute the challenge prime
+	return c == to_challenge([g1, g2, cm, h, Cw]+hs+commits+Com_w)
+
 
 def make_pi_v(params, aggr_vk, sigma, private_m, t):
 	""" prove correctness of kappa and nu """
@@ -67,7 +104,7 @@ def make_pi_v(params, aggr_vk, sigma, private_m, t):
 	Bw = wt*h
 	# create the challenge
 	c = to_challenge([g1, g2, alpha, Aw, Bw]+hs+beta)
-	# create responses 
+	# create responses
 	rm = [(wm[i] - c*private_m[i]) % o for i in range(len(private_m))]
 	rt = (wt - c*t) % o
 	return (c, rm, rt)
@@ -83,7 +120,3 @@ def verify_pi_v(params, aggr_vk, sigma, kappa, nu, pi_v):
 	Bw = c*nu + rt*h
 	# compute the challenge prime
 	return c == to_challenge([g1, g2, alpha, Aw, Bw]+hs+beta)
-
-
-
-
