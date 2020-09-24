@@ -68,6 +68,3 @@ def test_multi_authority():
 
     # verify credentials
     assert verify_cred(params, aggr_vk, Theta, public_m=public_m)
-
-
-	
