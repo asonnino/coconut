@@ -148,7 +148,6 @@ def blind_sign(params, sk, Lambda, public_m=[]):
     (G, o, g1, hs, h_blind, g2, e) = params
     (x, y) = sk
     (cm, c, pi_s) = Lambda
-    # (a, b) = zip(*c)
     coco_ensure( (len(c)+len(public_m)) <= len(hs), "Too many attributes.")
     # verify proof of correctness
     coco_ensure(verify_pi_s_up(params, c, cm, pi_s), "User ZKProof failed.")
