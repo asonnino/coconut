@@ -1,5 +1,5 @@
 from coconut.scheme_up import setup, prepare_blind_sign, keygen, agg_key, blind_sign, agg_cred
-from coconut.scheme import prove_cred, verify_cred
+from coconut.scheme_up import prove_cred, verify_cred
 
 def test_multi_authority():
     q = 7 # number of attributes
@@ -35,4 +35,4 @@ def test_multi_authority():
     Theta = prove_cred(min_params, min_aggr_vk, sigma, private_m)
 
     # verify credentials
-    verify_cred(min_params, min_aggr_vk, Theta, public_m=public_m)
+    assert verify_cred(min_params, min_aggr_vk, Theta, public_m=public_m)
